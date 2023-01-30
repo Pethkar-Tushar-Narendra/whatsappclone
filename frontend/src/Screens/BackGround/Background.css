@@ -1,0 +1,6 @@
+.background{
+    background-color: var(--bg-primary);
+    width: 100vw;
+    height: 18vh;
+    position: absolute;
+}

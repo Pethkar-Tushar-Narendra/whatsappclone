@@ -1,0 +1,70 @@
+.loginpage-container {
+  width: calc(100% - 40px);
+  height: calc(100% - 40px);
+  z-index: 800;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.loginpage-container .loginBox {
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.loginpage-container .loginBox .loginForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
+  background: var(--bg-quaternary);
+  padding: 2rem;
+  border-radius: 1rem;
+  height: 70%;
+  width: 50%;
+  overflow: scroll;
+  gap: 0.5rem;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+.loginpage-container .loginBox .loginForm .title {
+  color: var(--bg-primary);
+  font-weight: 700;
+  font-size: 2rem;
+}
+.loginpage-container .loginBox .loginForm .input h4 {
+  font-weight: 500;
+  font-size: 1rem;
+}
+.loginpage-container .loginBox .loginForm .input input {
+  width: 80%;
+  height: 10%;
+  padding: 1rem;
+  border-radius: 1rem;
+  font-weight: 500;
+  font-size: 1rem;
+}
+.loginpage-container .loginBox .loginForm .input input::placeholder {
+  font-weight: 500;
+  font-size: 1rem;
+}
+.loginpage-container .loginBox .loginForm .btn {
+  padding: 0.5rem;
+  border-radius: 1rem;
+  font-weight: 500;
+  font-size: 1rem;
+  background-color: var(--bg-primary);
+  color: #fff;
+  cursor: pointer;
+}
+.loginpage-container .loginBox .loginForm .input {
+  width: 100%;
+  /* height: 100%; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}

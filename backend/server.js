@@ -94,12 +94,7 @@ io.on("connection", async (socket) => {
   socket.on("sendMessage", async (data) => {
     const updateData = {
       ...data,
-      time:
-        new Date().getHours() +
-        ":" +
-        new Date().getMinutes() +
-        " " +
-        (new Date().getHours() < 12 ? "am" : "pm"),
+      time: new Date().getTime(),
     };
     const sender = await User.findOne({ mobNo: updateData.from });
     const receiver = await User.findOne({ mobNo: updateData.to });

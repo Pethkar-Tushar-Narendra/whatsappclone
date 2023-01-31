@@ -266,6 +266,7 @@
 }
 .userlist-container .messageBox .mesBox .msg {
   /* height: 2rem; */
+  height: fit-content;
   width: fit-content;
   max-width: 80%;
   /* border: 1px solid red; */
@@ -280,6 +281,8 @@
 }
 .userlist-container .messageBox .mesBox .msg p {
   color: #333;
+  font-weight: 600;
+  overflow: hidden;
 }
 .userlist-container .messageBox .mesBox .msg .time {
   width: 100%;
@@ -297,5 +300,49 @@
   top: 0;
   left: -1rem;
   border-right: 1rem solid #fff;
+  border-bottom: 1rem solid transparent;
+}
+
+.userlist-container .messageBox .mesBox .msgBox2{
+  width: 100%;
+  display: flex;
+  justify-content: end;
+}
+
+.userlist-container .messageBox .mesBox .msgBox2 .msg2 {
+  /* height: 2rem; */
+  width: fit-content;
+  max-width: 80%;
+  /* border: 1px solid red; */
+  padding: 0.3rem 1rem;
+  border-bottom-left-radius: 7px;
+  border-bottom-right-radius: 7px;
+  border-top-left-radius: 7px;
+  background-color: #89d49c;
+  position: relative;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.068),
+    0 6px 20px 0 rgba(0, 0, 0, 0.082);
+}
+.userlist-container .messageBox .mesBox .msgBox2 .msg2 p {
+  color: #333;
+  font-weight: 600;
+  overflow: hidden;
+}
+.userlist-container .messageBox .mesBox .msgBox2 .msg2 .time {
+  width: 100%;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  font-size: 0.7rem;
+  color: var(--clr-primary);
+}
+.userlist-container .messageBox .mesBox .msgBox2 .msg2::before {
+  content: '';
+  width: 0;
+  aspect-ratio: 1;
+  position: absolute;
+  top: 0;
+  right: -1rem;
+  border-left: 1rem solid #89d49c;
   border-bottom: 1rem solid transparent;
 }

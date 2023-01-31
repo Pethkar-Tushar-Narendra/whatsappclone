@@ -15,7 +15,7 @@ const LoginPage = () => {
   const loginSubmit = async (e) => {
     e.preventDefault();
     try {
-      console.log(loginMobNo, loginPass);
+      // console.log(loginMobNo, loginPass);
       const { data } = await axios.post("/api/login", {
         mobNo: loginMobNo,
         password: loginPass,

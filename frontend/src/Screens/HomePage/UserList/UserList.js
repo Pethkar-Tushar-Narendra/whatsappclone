@@ -6,7 +6,6 @@ import { SlOptionsVertical } from "react-icons/sl";
 import { BsChatLeftTextFill } from "react-icons/bs";
 import { BiLoaderCircle } from "react-icons/bi";
 import { FiMenu } from "react-icons/fi";
-import data from "../../../Testing Data/Data";
 import socketIOClient from "socket.io-client";
 import { VscSmiley } from "react-icons/vsc";
 import { RiAttachment2 } from "react-icons/ri";
@@ -15,22 +14,21 @@ import { MdDoubleArrow } from "react-icons/md";
 import { Store } from "../../../Store";
 const UserList = () => {
   const { state, dispatch: ctxDispatch } = useContext(Store);
-  console.log(state);
   const { userInfo } = state;
   const { mobNo } = userInfo;
+  const msg = state.messages;
   const user = mobNo;
   const uiMessagesRef = useRef(null);
   const ENDPOINT =
     window.location.host.indexOf("localhost") >= 0
       ? "http://127.0.0.1:4000"
       : window.location.host;
-  const { array_msg } = data;
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState("");
   const [query, setQuery] = useState("");
   const [receiver, setReceiver] = useState("");
   const [socket, setSocket] = useState(null);
-  const [messageArray, setMessageArray] = useState(array_msg);
+  const [messageArray, setMessageArray] = useState(msg);
   const [doublelogin, setDoublelogin] = useState(true);
   useEffect(() => {
     if (!socket) {
@@ -55,7 +53,7 @@ const UserList = () => {
         // console.log("doublelogin");
       });
       socket.on("receiveMsg", (data) => {
-        // setMessageArray(data)
+        setMessageArray(data);
         // console.log(data);
         ctxDispatch({ type: "SET_MESSAGES", payload: data });
         localStorage.setItem("whatsAppMessages", JSON.stringify(data));
@@ -66,6 +64,8 @@ const UserList = () => {
       //   setMessageArray(temp);
       // });
     }
+  }, [socket, user, ENDPOINT, userInfo, ctxDispatch]);
+  useEffect(() => {
     if (uiMessagesRef.current) {
       uiMessagesRef.current.scrollBy({
         top: uiMessagesRef.current.scrollHeight,
@@ -73,29 +73,16 @@ const UserList = () => {
         behavior: "smooth",
       });
     }
-  }, [socket, user, ENDPOINT, userInfo]);
+  }, [messageArray, receiver]);
   const msgHandler = (e) => {
     e.preventDefault();
     try {
-      console.log({ from: user, to: receiver, message });
       socket.emit("sendMessage", {
         from: user,
         to: receiver,
         message,
       });
-      // const temp = messageArray;
-      // temp.push({
-      //   message,
-      //   time:
-      //     new Date().getHours() +
-      //     ":" +
-      //     new Date().getMinutes() +
-      //     " " +
-      //     (new Date().getHours() < 12 ? "am" : "pm"),
-      // });
-      // setMessageArray(temp);
-      // console.log(messageArray);
-      // setMessage("");
+      setMessage("");
     } catch (error) {
       alert(error.message);
     }
@@ -191,13 +178,38 @@ const UserList = () => {
                   </div>
                 </div>
                 <div className="mesBox" ref={uiMessagesRef}>
-                  {messageArray.map((item, i) => (
-                    <div key={i} className="msg">
-                      <p> {item.message}</p>
-                      <p className="time">{item.time && item.time}</p>
-                      <div className="corner"></div>
-                    </div>
-                  ))}
+                  {messageArray?.map((item, i) => {
+                    const date = new Date(item.time * 1000);
+                    return item.from === user ? (
+                      <div key={i} className="msgBox2">
+                        <div className="msg2">
+                          <p> {item.message}</p>
+                          <p className="time">
+                            {item.time &&
+                              date.getHours() +
+                                ":" +
+                                date.getMinutes() +
+                                " " +
+                                (date.getHours() < 12 ? "am" : "pm")}
+                          </p>
+                          <div className="corner"></div>
+                        </div>
+                      </div>
+                    ) : (
+                      <div key={i} className="msg">
+                        <p> {item.message}</p>
+                        <p className="time">
+                          {item.time &&
+                            date.getHours() +
+                              ":" +
+                              date.getMinutes() +
+                              " " +
+                              (date.getHours() < 12 ? "am" : "pm")}
+                        </p>
+                        <div className="corner"></div>
+                      </div>
+                    );
+                  })}
                 </div>
                 <div className="user-input">
                   <VscSmiley className="icon" />

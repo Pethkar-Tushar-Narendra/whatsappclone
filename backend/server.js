@@ -74,47 +74,43 @@ io.on("connection", async (socket) => {
           if (decode) {
             const user = await User.findOne({ mobNo: decode.mobNo });
             if (user.socketId !== null) {
-              // console.log(user.socketId, " double login");
               io.to(user.socketId).emit("doublelogin", { doublelogin: true });
             }
             user.socketId = socket.id;
             user.online = true;
             const messages = user.messages;
+            // console.log(messages);
             const savedUser = await user.save();
             const users = await User.find({}, { _id: 0, mobNo: 1 });
-            io.to(socket.id).emit("users", { users: users, messages });
-            // console.log(user);
+            io.to(socket.id).emit("users", {
+              users: users,
+              messages,
+            });
           }
         }
       });
     }
-    // const users = await User.find();
-    // console.log(users);
-    // const existUser = users.find((x) => x.mobNo === updatedUser.mobNo);
-    // if (existUser) {
-    //   existUser.socketId = socket.id;
-    //   existUser.online = true;
-    // } else {
-    //   users.push(updatedUser);
-    // }
-    // console.log(users);
   });
-  socket.on("sendMessage", (data) => {
-    console.log(data);
-    //   const updateData = {
-    //     ...data,
-    //     time:
-    //       new Date().getHours() +
-    //       ":" +
-    //       new Date().getMinutes() +
-    //       " " +
-    //       (new Date().getHours() < 12 ? "am" : "pm"),
-    //   };
-    //   const receiver = users.find((x) => x.mobNo === updateData.to);
-    //   if (receiver) {
-    //     // io.to(receiver.socketId).emit('updateUser', updateData);
-    //   }
-    //   // io.emit('message', (messages = [...messages, data]));
+  socket.on("sendMessage", async (data) => {
+    const updateData = {
+      ...data,
+      time:
+        new Date().getHours() +
+        ":" +
+        new Date().getMinutes() +
+        " " +
+        (new Date().getHours() < 12 ? "am" : "pm"),
+    };
+    const sender = await User.findOne({ mobNo: updateData.from });
+    const receiver = await User.findOne({ mobNo: updateData.to });
+    if (sender && receiver) {
+      sender.messages.push(updateData);
+      receiver.messages.push(updateData);
+      const savedSender = await sender.save();
+      const savedReceiver = await receiver.save();
+      io.to(sender.socketId).emit("receiveMsg", sender.messages);
+      io.to(receiver.socketId).emit("receiveMsg", receiver.messages);
+    }
   });
   socket.on("disconnect", async () => {
     const users = await User.find();

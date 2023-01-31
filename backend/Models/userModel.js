@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema({
   mobNo: { type: String, required: true, unique: true },
@@ -8,5 +8,5 @@ const userSchema = new mongoose.Schema({
   messages: [],
 });
 
-const User = mongoose.model('Users', userSchema);
+const User = mongoose.model("Users", userSchema);
 export default User;

@@ -15,6 +15,7 @@ import { MdDoubleArrow } from "react-icons/md";
 import { Store } from "../../../Store";
 const UserList = () => {
   const { state, dispatch: ctxDispatch } = useContext(Store);
+  console.log(state);
   const { userInfo } = state;
   const { mobNo } = userInfo;
   const user = mobNo;
@@ -23,9 +24,8 @@ const UserList = () => {
     window.location.host.indexOf("localhost") >= 0
       ? "http://127.0.0.1:4000"
       : window.location.host;
-  const messages1 = data.messages;
   const { array_msg } = data;
-  const [messages, setMessages] = useState(messages1);
+  const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState("");
   const [query, setQuery] = useState("");
   const [receiver, setReceiver] = useState("");
@@ -45,14 +45,20 @@ const UserList = () => {
         console.log(err);
       });
       socket.on("users", (data) => {
-        console.log(data.users);
-        // setMessages(messages1);
+        // console.log(data.messages);
+        setMessages(data.users);
+        ctxDispatch({ type: "SET_MESSAGES", payload: data.messages });
+        localStorage.setItem("whatsAppMessages", JSON.stringify(data.messages));
       });
       socket.on("doublelogin", () => {
         setDoublelogin(false);
+        // console.log("doublelogin");
       });
       socket.on("receiveMsg", (data) => {
-        console.log(data);
+        // setMessageArray(data)
+        // console.log(data);
+        ctxDispatch({ type: "SET_MESSAGES", payload: data });
+        localStorage.setItem("whatsAppMessages", JSON.stringify(data));
       });
       // socket.on('updateUser', (data) => {
       //   const temp = messageArray;
@@ -72,11 +78,11 @@ const UserList = () => {
     e.preventDefault();
     try {
       console.log({ from: user, to: receiver, message });
-      // socket.emit('sendMessage', {
-      //   from: user,
-      //   to: receiver,
-      //   message,
-      // });
+      socket.emit("sendMessage", {
+        from: user,
+        to: receiver,
+        message,
+      });
       // const temp = messageArray;
       // temp.push({
       //   message,
@@ -130,28 +136,33 @@ const UserList = () => {
             </div>
             <div className="userlist">
               {messages
-                .filter((item, i) => item.from.includes(query.trim()))
+                .filter(
+                  (item, i) =>
+                    item.mobNo.includes(query.trim()) && item.mobNo !== user
+                )
                 .map((item, i) => (
                   <div
                     className="userBox"
                     key={i}
                     onClick={() => {
-                      setReceiver(item.from);
+                      setReceiver(item.mobNo);
                     }}
                     style={{
-                      backgroundColor: receiver === item.from && "#eaeee6",
+                      backgroundColor: receiver === item.mobNo && "#eaeee6",
                     }}
                   >
                     <div
                       className="img"
-                      style={{ backgroundImage: `url(${item.img})` }}
+                      style={{
+                        backgroundImage: `url(https://res.cloudinary.com/dyrkmzn7t/image/upload/v1674060633/default_profile_pic_w4yn7a.png)`,
+                      }}
                     ></div>
                     <div className="box">
                       <div className="name">
-                        <h4>{item.from}</h4>
+                        <h4>{item.mobNo}</h4>
                       </div>
                       <div className="msg-overview">
-                        <p>{item.message}</p>
+                        <p>Hello</p>
                       </div>
                     </div>
                   </div>

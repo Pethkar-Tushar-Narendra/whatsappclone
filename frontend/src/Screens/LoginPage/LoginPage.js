@@ -1,46 +1,47 @@
-import React, { useContext, useState } from 'react';
-import { Store } from '../../Store';
-import './LoginPag.css';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import React, { useContext, useState } from "react";
+import { Store } from "../../Store";
+import "./LoginPag.css";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 const LoginPage = () => {
   const navigate = useNavigate();
   const { dispatch: ctxDispatch } = useContext(Store);
   const [loginToggle, setLoginToggle] = useState(true);
-  const [password, setPassword] = useState('');
-  const [signUpMobNo, setSignUpMobNo] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [loginMobNo, setLoginMobNo] = useState('');
-  const [loginPass, setLoginPass] = useState('');
+  const [password, setPassword] = useState("");
+  const [signUpMobNo, setSignUpMobNo] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [loginMobNo, setLoginMobNo] = useState("");
+  const [loginPass, setLoginPass] = useState("");
   const loginSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post('/api/login', {
+      console.log(loginMobNo, loginPass);
+      const { data } = await axios.post("/api/login", {
         mobNo: loginMobNo,
         password: loginPass,
       });
-      ctxDispatch({ type: 'USER_SIGNIN', payload: data });
-      localStorage.setItem('whatsAppUserInfo', JSON.stringify(data));
-      navigate('/');
+      ctxDispatch({ type: "USER_SIGNIN", payload: data });
+      localStorage.setItem("whatsAppUserInfo", JSON.stringify(data));
+      navigate("/");
     } catch (err) {
       console.log(err.response.data.message);
     }
   };
   const signUpSubmit = async (e) => {
     e.preventDefault();
-    console.log('password', password, ' ', 'Cpassword', confirmPassword);
+    console.log("password", password, " ", "Cpassword", confirmPassword);
     if (password !== confirmPassword) {
-      window.alert('Passwords do not match');
+      window.alert("Passwords do not match");
       return;
     }
     try {
-      const { data } = await axios.post('/api/signup', {
+      const { data } = await axios.post("/api/signup", {
         signUpMobNo,
         password,
       });
-      ctxDispatch({ type: 'USER_SIGNIN', payload: data });
-      localStorage.setItem('whatsAppUserInfo', JSON.stringify(data));
-      navigate('/');
+      ctxDispatch({ type: "USER_SIGNIN", payload: data });
+      localStorage.setItem("whatsAppUserInfo", JSON.stringify(data));
+      navigate("/");
     } catch (err) {
       console.log(err.response.data.message);
     }
@@ -77,7 +78,7 @@ const LoginPage = () => {
               Submit
             </button>
             <p>
-              If you want to signup{' '}
+              If you want to signup{" "}
               <button
                 onClick={() => {
                   setLoginToggle(false);
@@ -128,7 +129,7 @@ const LoginPage = () => {
               Submit
             </button>
             <p>
-              If you want to login{' '}
+              If you want to login{" "}
               <button
                 onClick={() => {
                   setLoginToggle(true);

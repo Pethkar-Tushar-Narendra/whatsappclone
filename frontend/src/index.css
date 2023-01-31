@@ -10,13 +10,12 @@ body {
   line-height: 1.6;
   font-family: 'Poppins', sans-serif;
   background-color: var(--bg-secondary);
-  /* user-select: none; */
   min-height: 100vh;
   position: relative;
 }
 ::-webkit-scrollbar {
-  /* display: none; */
   width: 6px;
+  height: 100%;
 }
 ::-webkit-scrollbar-thumb {
   background: var(--clr-para);

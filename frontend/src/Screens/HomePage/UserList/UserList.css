@@ -310,10 +310,8 @@
 }
 
 .userlist-container .messageBox .mesBox .msgBox2 .msg2 {
-  /* height: 2rem; */
   width: fit-content;
   max-width: 80%;
-  /* border: 1px solid red; */
   padding: 0.3rem 1rem;
   border-bottom-left-radius: 7px;
   border-bottom-right-radius: 7px;

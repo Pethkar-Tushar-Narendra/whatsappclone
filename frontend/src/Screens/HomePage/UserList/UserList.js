@@ -16,7 +16,7 @@ const UserList = () => {
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { userInfo } = state;
   const { mobNo } = userInfo;
-  const msg = state.messages;
+  const messageArray = state.messages;
   const user = mobNo;
   const uiMessagesRef = useRef(null);
   const ENDPOINT =
@@ -28,8 +28,9 @@ const UserList = () => {
   const [query, setQuery] = useState("");
   const [receiver, setReceiver] = useState("");
   const [socket, setSocket] = useState(null);
-  const [messageArray, setMessageArray] = useState(msg);
+  // const [messageArray, setMessageArray] = useState(msg);
   const [doublelogin, setDoublelogin] = useState(true);
+  const [OnlieStatus, setOnlineStatus] = useState(false);
   useEffect(() => {
     if (!socket) {
       const sk = socketIOClient(ENDPOINT);
@@ -53,10 +54,11 @@ const UserList = () => {
         // console.log("doublelogin");
       });
       socket.on("receiveMsg", (data) => {
-        setMessageArray(data);
-        // console.log(data);
         ctxDispatch({ type: "SET_MESSAGES", payload: data });
-        localStorage.setItem("whatsAppMessages", JSON.stringify(data));
+        // localStorage.setItem("whatsAppMessages", JSON.stringify(data));
+      });
+      socket.on("checkOnlineRes", (data) => {
+        setOnlineStatus(data);
       });
       // socket.on('updateUser', (data) => {
       //   const temp = messageArray;
@@ -77,6 +79,7 @@ const UserList = () => {
   const msgHandler = (e) => {
     e.preventDefault();
     try {
+      socket.emit("onlinestatusReq", receiver);
       socket.emit("sendMessage", {
         from: user,
         to: receiver,
@@ -133,6 +136,7 @@ const UserList = () => {
                     key={i}
                     onClick={() => {
                       setReceiver(item.mobNo);
+                      socket.emit("onlinestatusReq", item.mobNo);
                     }}
                     style={{
                       backgroundColor: receiver === item.mobNo && "#eaeee6",
@@ -169,7 +173,7 @@ const UserList = () => {
                     ></div>
                     <div className="cred-box">
                       <h4>{receiver}</h4>
-                      <p>online</p>
+                      <p>{OnlieStatus ? "online" : "offline"}</p>
                     </div>
                   </div>
                   <div className="options">
@@ -179,14 +183,17 @@ const UserList = () => {
                 </div>
                 <div className="mesBox" ref={uiMessagesRef}>
                   {messageArray?.map((item, i) => {
-                    const date = new Date(item.time * 1000);
+                    const date = new Date(item.time);
+
                     return item.from === user ? (
                       <div key={i} className="msgBox2">
                         <div className="msg2">
                           <p> {item.message}</p>
                           <p className="time">
                             {item.time &&
-                              date.getHours() +
+                              (date.getHours() < 12
+                                ? date.getHours()
+                                : date.getHours() - 12) +
                                 ":" +
                                 date.getMinutes() +
                                 " " +
@@ -200,7 +207,9 @@ const UserList = () => {
                         <p> {item.message}</p>
                         <p className="time">
                           {item.time &&
-                            date.getHours() +
+                            (date.getHours() < 12
+                              ? date.getHours()
+                              : date.getHours() - 12) +
                               ":" +
                               date.getMinutes() +
                               " " +

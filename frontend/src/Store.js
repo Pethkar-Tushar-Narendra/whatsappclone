@@ -5,9 +5,7 @@ const initialState = {
   userInfo: localStorage.getItem("whatsAppUserInfo")
     ? JSON.parse(localStorage.getItem("whatsAppUserInfo"))
     : null,
-  messages: localStorage.getItem("whatsAppMessages")
-    ? JSON.parse(localStorage.getItem("whatsAppMessages"))
-    : null,
+  messages: null,
 };
 
 function reducer(state, action) {

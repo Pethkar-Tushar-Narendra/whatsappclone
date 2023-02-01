@@ -79,7 +79,6 @@ io.on("connection", async (socket) => {
             user.socketId = socket.id;
             user.online = true;
             const messages = user.messages;
-            // console.log(messages);
             const savedUser = await user.save();
             const users = await User.find({}, { _id: 0, mobNo: 1 });
             io.to(socket.id).emit("users", {
@@ -90,6 +89,10 @@ io.on("connection", async (socket) => {
         }
       });
     }
+  });
+  socket.on("onlinestatusReq", async (receiver) => {
+    const user = await User.findOne({ mobNo: receiver }, { _id: 0, online: 1 });
+    io.to(socket.id).emit("checkOnlineRes", user.online);
   });
   socket.on("sendMessage", async (data) => {
     const updateData = {
@@ -114,7 +117,6 @@ io.on("connection", async (socket) => {
       user.online = false;
       user.socketId = null;
       const savedUser = await user.save();
-      console.log(savedUser);
     }
   });
 });

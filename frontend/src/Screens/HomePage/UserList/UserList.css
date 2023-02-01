@@ -41,6 +41,12 @@
   justify-content: space-between;
   padding-right: 1.5rem;
 }
+.userlist-container .infoBox .credentials .icon-container .signout-btn {
+  position: absolute;
+  right: 5%;
+  top: 100%;
+  z-index: 20;
+}
 .userlist-container .infoBox .credentials .icon-container .icon {
   font-size: 2rem;
   color: #48474b;

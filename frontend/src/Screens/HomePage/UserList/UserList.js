@@ -28,9 +28,9 @@ const UserList = () => {
   const [query, setQuery] = useState("");
   const [receiver, setReceiver] = useState("");
   const [socket, setSocket] = useState(null);
-  // const [messageArray, setMessageArray] = useState(msg);
   const [doublelogin, setDoublelogin] = useState(true);
   const [OnlieStatus, setOnlineStatus] = useState(false);
+  const [signoutToggle, setSignoutToggle] = useState(false);
   useEffect(() => {
     if (!socket) {
       const sk = socketIOClient(ENDPOINT);
@@ -50,7 +50,7 @@ const UserList = () => {
         localStorage.setItem("whatsAppMessages", JSON.stringify(data.messages));
       });
       socket.on("doublelogin", () => {
-        setDoublelogin(false);
+        // setDoublelogin(false);
         // console.log("doublelogin");
       });
       socket.on("receiveMsg", (data) => {
@@ -90,6 +90,10 @@ const UserList = () => {
       alert(error.message);
     }
   };
+  const signoutHandler = () => {
+    ctxDispatch({ type: "USER_SIGNOUT" });
+    localStorage.removeItem("whatsAppUserInfo");
+  };
   return (
     <div className="userlist-container">
       {doublelogin && (
@@ -107,7 +111,19 @@ const UserList = () => {
                 <MdGroups className="icon" />
                 <BiLoaderCircle className="icon" />
                 <BsChatLeftTextFill className="icon" />
-                <SlOptionsVertical className="icon" />
+                <SlOptionsVertical
+                  className="icon"
+                  onClick={() => {
+                    setSignoutToggle(!signoutToggle);
+                  }}
+                />
+                <button
+                  className="btn signout-btn"
+                  onClick={signoutHandler}
+                  style={{ display: signoutToggle ? "flex" : "none" }}
+                >
+                  Signout
+                </button>
               </div>
             </div>
             <div className="searchbar">

@@ -50,7 +50,7 @@ const UserList = () => {
         localStorage.setItem("whatsAppMessages", JSON.stringify(data.messages));
       });
       socket.on("doublelogin", () => {
-        // setDoublelogin(false);
+        setDoublelogin(false);
         // console.log("doublelogin");
       });
       socket.on("receiveMsg", (data) => {

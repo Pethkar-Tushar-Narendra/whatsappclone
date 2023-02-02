@@ -44,27 +44,19 @@ const UserList = () => {
         console.log(err);
       });
       socket.on("users", (data) => {
-        // console.log(data.messages);
         setMessages(data.users);
         ctxDispatch({ type: "SET_MESSAGES", payload: data.messages });
         localStorage.setItem("whatsAppMessages", JSON.stringify(data.messages));
       });
       socket.on("doublelogin", () => {
         // setDoublelogin(false);
-        // console.log("doublelogin");
       });
       socket.on("receiveMsg", (data) => {
         ctxDispatch({ type: "SET_MESSAGES", payload: data });
-        // localStorage.setItem("whatsAppMessages", JSON.stringify(data));
       });
       socket.on("checkOnlineRes", (data) => {
         setOnlineStatus(data);
       });
-      // socket.on('updateUser', (data) => {
-      //   const temp = messageArray;
-      //   temp.push(data);
-      //   setMessageArray(temp);
-      // });
     }
   }, [socket, user, ENDPOINT, userInfo, ctxDispatch]);
   useEffect(() => {
@@ -94,6 +86,7 @@ const UserList = () => {
     ctxDispatch({ type: "USER_SIGNOUT" });
     localStorage.removeItem("whatsAppUserInfo");
   };
+  const receiverMessageArray = [];
   return (
     <div className="userlist-container">
       {doublelogin && (
@@ -219,16 +212,102 @@ const UserList = () => {
                 </div>
                 <div className="mesBox" ref={uiMessagesRef}>
                   {messageArray
-                    .filter(
-                      (item, i) =>
-                        item.to === receiver || item.from === receiver
-                    )
+                    .filter((item, i) => {
+                      if (item.to === receiver || item.from === receiver) {
+                        receiverMessageArray.push(item);
+                      }
+                      return item.to === receiver || item.from === receiver;
+                    })
                     .map((item, i) => {
                       const date = new Date(item.time);
-
+                      const showDate =
+                        receiverMessageArray[i + 1] || i === 0
+                          ? new Date(receiverMessageArray[i].time).getDay() !==
+                              new Date(
+                                receiverMessageArray[i + 1].time
+                              ).getDay() &&
+                            new Date(
+                              receiverMessageArray[i + 1].time
+                            ).getDate() +
+                              "/" +
+                              (new Date(
+                                receiverMessageArray[i + 1].time
+                              ).getMonth() +
+                                1) +
+                              "/" +
+                              new Date(
+                                receiverMessageArray[i + 1].time
+                              ).getFullYear()
+                          : null;
                       return item.from === user ? (
-                        <div key={i} className="msgBox2">
-                          <div className="msg2">
+                        <div key={i}>
+                          <div
+                            className="dateShower"
+                            style={{ display: i === 0 ? "flex" : "none" }}
+                          >
+                            <p className="dateBox">
+                              {receiverMessageArray[i + 1]
+                                ? new Date(
+                                    receiverMessageArray[i + 1].time
+                                  ).getDate() +
+                                  "/" +
+                                  (new Date(
+                                    receiverMessageArray[i + 1].time
+                                  ).getMonth() +
+                                    1) +
+                                  "/" +
+                                  new Date(
+                                    receiverMessageArray[i + 1].time
+                                  ).getFullYear()
+                                : ""}
+                            </p>
+                          </div>
+                          <div className="msgBox2">
+                            <div className="msg2">
+                              <p> {item.message}</p>
+                              <p className="time">
+                                {item.time &&
+                                  (date.getHours() < 12
+                                    ? date.getHours()
+                                    : date.getHours() - 12) +
+                                    ":" +
+                                    date.getMinutes() +
+                                    " " +
+                                    (date.getHours() < 12 ? "am" : "pm")}
+                              </p>
+                            </div>
+                          </div>
+                          <div
+                            className="dateShower"
+                            style={{ display: showDate ? "flex" : "none" }}
+                          >
+                            <p className="dateBox">{showDate}</p>
+                          </div>
+                        </div>
+                      ) : (
+                        <div key={i}>
+                          <div
+                            className="dateShower"
+                            style={{ display: i === 0 ? "flex" : "none" }}
+                          >
+                            <p className="dateBox">
+                              {receiverMessageArray[i + 1]
+                                ? new Date(
+                                    receiverMessageArray[i + 1].time
+                                  ).getDate() +
+                                  "/" +
+                                  (new Date(
+                                    receiverMessageArray[i + 1].time
+                                  ).getMonth() +
+                                    1) +
+                                  "/" +
+                                  new Date(
+                                    receiverMessageArray[i + 1].time
+                                  ).getFullYear()
+                                : ""}
+                            </p>
+                          </div>
+                          <div className="msg">
                             <p> {item.message}</p>
                             <p className="time">
                               {item.time &&
@@ -240,23 +319,13 @@ const UserList = () => {
                                   " " +
                                   (date.getHours() < 12 ? "am" : "pm")}
                             </p>
-                            <div className="corner"></div>
                           </div>
-                        </div>
-                      ) : (
-                        <div key={i} className="msg">
-                          <p> {item.message}</p>
-                          <p className="time">
-                            {item.time &&
-                              (date.getHours() < 12
-                                ? date.getHours()
-                                : date.getHours() - 12) +
-                                ":" +
-                                date.getMinutes() +
-                                " " +
-                                (date.getHours() < 12 ? "am" : "pm")}
-                          </p>
-                          <div className="corner"></div>
+                          <div
+                            className="dateShower"
+                            style={{ display: showDate ? "flex" : "none" }}
+                          >
+                            <p className="dateBox">{showDate}</p>
+                          </div>
                         </div>
                       );
                     })}

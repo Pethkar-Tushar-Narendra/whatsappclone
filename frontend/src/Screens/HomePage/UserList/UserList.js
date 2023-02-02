@@ -50,7 +50,7 @@ const UserList = () => {
         localStorage.setItem("whatsAppMessages", JSON.stringify(data.messages));
       });
       socket.on("doublelogin", () => {
-        setDoublelogin(false);
+        // setDoublelogin(false);
         // console.log("doublelogin");
       });
       socket.on("receiveMsg", (data) => {
@@ -146,34 +146,54 @@ const UserList = () => {
                   (item, i) =>
                     item.mobNo.includes(query.trim()) && item.mobNo !== user
                 )
-                .map((item, i) => (
-                  <div
-                    className="userBox"
-                    key={i}
-                    onClick={() => {
-                      setReceiver(item.mobNo);
-                      socket.emit("onlinestatusReq", item.mobNo);
-                    }}
-                    style={{
-                      backgroundColor: receiver === item.mobNo && "#eaeee6",
-                    }}
-                  >
+                .map((item, i) => {
+                  var lastMessage = "";
+                  for (
+                    let index = messageArray.length - 1;
+                    index >= 0;
+                    index--
+                  ) {
+                    if (
+                      messageArray[index].to === item.mobNo ||
+                      messageArray[index].from === item.mobNo
+                    ) {
+                      lastMessage = messageArray[index].message;
+                      break;
+                    }
+                  }
+                  return (
                     <div
-                      className="img"
-                      style={{
-                        backgroundImage: `url(https://res.cloudinary.com/dyrkmzn7t/image/upload/v1674060633/default_profile_pic_w4yn7a.png)`,
+                      className="userBox"
+                      key={i}
+                      onClick={() => {
+                        setReceiver(item.mobNo);
+                        socket.emit("onlinestatusReq", item.mobNo);
                       }}
-                    ></div>
-                    <div className="box">
-                      <div className="name">
-                        <h4>{item.mobNo}</h4>
-                      </div>
-                      <div className="msg-overview">
-                        <p>Hello</p>
+                      style={{
+                        backgroundColor: receiver === item.mobNo && "#eaeee6",
+                      }}
+                    >
+                      <div
+                        className="img"
+                        style={{
+                          backgroundImage: `url(https://res.cloudinary.com/dyrkmzn7t/image/upload/v1674060633/default_profile_pic_w4yn7a.png)`,
+                        }}
+                      ></div>
+                      <div className="box">
+                        <div className="name">
+                          <h4>{item.mobNo}</h4>
+                        </div>
+                        <div className="msg-overview">
+                          <p>
+                            {lastMessage
+                              ? lastMessage
+                              : "♦ Waiting for message"}
+                          </p>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
             </div>
           </div>
           <div className="messageBox">
@@ -198,12 +218,33 @@ const UserList = () => {
                   </div>
                 </div>
                 <div className="mesBox" ref={uiMessagesRef}>
-                  {messageArray?.map((item, i) => {
-                    const date = new Date(item.time);
+                  {messageArray
+                    .filter(
+                      (item, i) =>
+                        item.to === receiver || item.from === receiver
+                    )
+                    .map((item, i) => {
+                      const date = new Date(item.time);
 
-                    return item.from === user ? (
-                      <div key={i} className="msgBox2">
-                        <div className="msg2">
+                      return item.from === user ? (
+                        <div key={i} className="msgBox2">
+                          <div className="msg2">
+                            <p> {item.message}</p>
+                            <p className="time">
+                              {item.time &&
+                                (date.getHours() < 12
+                                  ? date.getHours()
+                                  : date.getHours() - 12) +
+                                  ":" +
+                                  date.getMinutes() +
+                                  " " +
+                                  (date.getHours() < 12 ? "am" : "pm")}
+                            </p>
+                            <div className="corner"></div>
+                          </div>
+                        </div>
+                      ) : (
+                        <div key={i} className="msg">
                           <p> {item.message}</p>
                           <p className="time">
                             {item.time &&
@@ -217,24 +258,8 @@ const UserList = () => {
                           </p>
                           <div className="corner"></div>
                         </div>
-                      </div>
-                    ) : (
-                      <div key={i} className="msg">
-                        <p> {item.message}</p>
-                        <p className="time">
-                          {item.time &&
-                            (date.getHours() < 12
-                              ? date.getHours()
-                              : date.getHours() - 12) +
-                              ":" +
-                              date.getMinutes() +
-                              " " +
-                              (date.getHours() < 12 ? "am" : "pm")}
-                        </p>
-                        <div className="corner"></div>
-                      </div>
-                    );
-                  })}
+                      );
+                    })}
                 </div>
                 <div className="user-input">
                   <VscSmiley className="icon" />

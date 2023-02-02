@@ -215,6 +215,10 @@
   justify-content: start;
   overflow: hidden;
 }
+.userlist-container .infoBox .userlist .userBox .box .msg-overview {
+  height: 40%;
+  align-items: flex-start;
+overflow: hidden;}
 .userlist-container .messageBox {
   width: 65%;
   height: 100%;

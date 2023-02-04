@@ -6,10 +6,15 @@ const initialState = {
     ? JSON.parse(localStorage.getItem("whatsAppUserInfo"))
     : null,
   messages: null,
+  contactsInfo: localStorage.getItem("whatsAppUserContactsInfo")
+    ? JSON.parse(localStorage.getItem("whatsAppUserContactsInfo"))
+    : [],
 };
 
 function reducer(state, action) {
   switch (action.type) {
+    case "SET_CONTACTS":
+      return { ...state, contactsInfo: action.payload };
     case "SET_MESSAGES":
       return { ...state, messages: action.payload };
     case "USER_SIGNIN":

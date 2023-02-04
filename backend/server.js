@@ -97,7 +97,7 @@ io.on("connection", async (socket) => {
   });
   socket.on("onlinestatusReq", async (receiver) => {
     const user = await User.findOne({ mobNo: receiver }, { _id: 0, online: 1 });
-    io.to(socket.id).emit("checkOnlineRes", user.online);
+    user && io.to(socket.id).emit("checkOnlineRes", user.online);
   });
   socket.on("sendMessage", async (data) => {
     const updateData = {

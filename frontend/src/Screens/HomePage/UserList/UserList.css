@@ -8,6 +8,7 @@
   height: 100%;
   background-color: #fff;
   border-right: 0.08rem solid var(--clr-para);
+  position: relative;
 }
 .userlist-container .messageBox .credentials,
 .userlist-container .infoBox .credentials {
@@ -202,9 +203,7 @@
   height: 100%;
   padding: 0 1rem;
   border-bottom: 0.01rem solid var(--clr-para);
-}
-.userlist-container .infoBox .userlist .userBox .box:first-child {
-  border: 1px solid red;
+  position: relative;
 }
 .userlist-container .infoBox .userlist .userBox .box .name,
 .userlist-container .infoBox .userlist .userBox .box .msg-overview {
@@ -214,6 +213,23 @@
   align-items: center;
   justify-content: start;
   overflow: hidden;
+}
+.userlist-container .infoBox .userlist .userBox .box .timeShow{
+  position: absolute;
+  top: 10%;
+  right: 5%;
+  font-size: 0.8rem;
+}
+.userlist-container .infoBox .userlist .userBox .box .icon{
+  padding: 0.2rem;
+  position: absolute;
+  bottom: 20%;
+  right: 3%;
+  font-size: 1.3rem;
+  border-radius: 50%;
+}
+.userlist-container .infoBox .userlist .userBox .box .icon:hover{
+  background-color: var(--clr-para);
 }
 .userlist-container .infoBox .userlist .userBox .box .msg-overview {
   height: 40%;

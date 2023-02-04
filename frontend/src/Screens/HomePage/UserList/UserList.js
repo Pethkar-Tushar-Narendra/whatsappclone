@@ -12,11 +12,13 @@ import { RiAttachment2 } from "react-icons/ri";
 import { BsMic } from "react-icons/bs";
 import { MdDoubleArrow } from "react-icons/md";
 import { Store } from "../../../Store";
+import NumberEdit from "./EditScreens/NumberEditScreen/NumberEdit";
 const UserList = () => {
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { userInfo } = state;
   const { mobNo } = userInfo;
   const messageArray = state.messages;
+  const contactsInfo = state.contactsInfo;
   const user = mobNo;
   const uiMessagesRef = useRef(null);
   const ENDPOINT =
@@ -31,6 +33,7 @@ const UserList = () => {
   const [doublelogin, setDoublelogin] = useState(true);
   const [OnlieStatus, setOnlineStatus] = useState(false);
   const [signoutToggle, setSignoutToggle] = useState(false);
+  const [editMobileNumber, setEditMobileNumber] = useState(false);
   useEffect(() => {
     if (!socket) {
       const sk = socketIOClient(ENDPOINT);
@@ -58,7 +61,7 @@ const UserList = () => {
         setOnlineStatus(data);
       });
     }
-  }, [socket, user, ENDPOINT, userInfo, ctxDispatch]);
+  }, [socket, user, ENDPOINT, userInfo, ctxDispatch, contactsInfo]);
   useEffect(() => {
     if (uiMessagesRef.current) {
       uiMessagesRef.current.scrollBy({
@@ -87,12 +90,22 @@ const UserList = () => {
     localStorage.removeItem("whatsAppUserInfo");
   };
   const receiverMessageArray = [];
+  // const contactsInfo = [
+  //   { mobNo: "8446520712", name: "Tushar" },
+  //   { mobNo: "9960439764", name: "Raj" },
+  //   { mobNo: "8221324353", name: "Parth Paliwal" },
+  // ];
   return (
     <div className="userlist-container">
       {doublelogin && (
         <>
           {" "}
           <div className="infoBox">
+            <NumberEdit
+              editMobileNumber={editMobileNumber}
+              setEditMobileNumber={setEditMobileNumber}
+              receiver={receiver}
+            />
             <div className="credentials">
               <div
                 className="prof-pic"
@@ -140,7 +153,7 @@ const UserList = () => {
                     item.mobNo.includes(query.trim()) && item.mobNo !== user
                 )
                 .map((item, i) => {
-                  var lastMessage = "";
+                  var lastMessageArray = "";
                   for (
                     let index = messageArray.length - 1;
                     index >= 0;
@@ -150,10 +163,14 @@ const UserList = () => {
                       messageArray[index].to === item.mobNo ||
                       messageArray[index].from === item.mobNo
                     ) {
-                      lastMessage = messageArray[index].message;
+                      lastMessageArray = messageArray[index];
                       break;
                     }
                   }
+                  const timeShow = new Date(lastMessageArray.time);
+                  const contact = contactsInfo.find(
+                    (o) => o.mobNo === item.mobNo
+                  );
                   return (
                     <div
                       className="userBox"
@@ -174,15 +191,50 @@ const UserList = () => {
                       ></div>
                       <div className="box">
                         <div className="name">
-                          <h4>{item.mobNo}</h4>
+                          <h4>{contact ? contact.name : item.mobNo}</h4>
                         </div>
                         <div className="msg-overview">
                           <p>
-                            {lastMessage
-                              ? lastMessage
+                            {lastMessageArray
+                              ? lastMessageArray.message
                               : "♦ Waiting for message"}
                           </p>
                         </div>
+                        {/* <SlOptionsVertical
+                          className="icon"
+                          onClick={() => {
+                            setEditMobileNumber(!editMobileNumber);
+                          }}
+                        /> */}
+                        <p className="timeShow">
+                          {lastMessageArray.time &&
+                            (new Date().getDate() +
+                              "/" +
+                              (new Date().getMonth() + 1) +
+                              "/" +
+                              new Date().getFullYear() ===
+                            new Date(lastMessageArray.time).getDate() +
+                              "/" +
+                              (new Date(lastMessageArray.time).getMonth() + 1) +
+                              "/" +
+                              new Date(lastMessageArray.time).getFullYear()
+                              ? ((timeShow.getHours() < 12
+                                  ? timeShow.getHours()
+                                  : timeShow.getHours() - 12) === 0
+                                  ? 12
+                                  : timeShow.getHours() < 12
+                                  ? timeShow.getHours()
+                                  : timeShow.getHours() - 12) +
+                                ":" +
+                                timeShow.getMinutes() +
+                                " " +
+                                (timeShow.getHours() < 12 ? "am" : "pm")
+                              : timeShow.getDate() +
+                                "/" +
+                                (timeShow.getMonth() + 1) +
+                                "/" +
+                                timeShow.getFullYear())}
+                        </p>
                       </div>
                     </div>
                   );
@@ -201,13 +253,22 @@ const UserList = () => {
                       }}
                     ></div>
                     <div className="cred-box">
-                      <h4>{receiver}</h4>
+                      <h4>
+                        {contactsInfo.find((o) => o.mobNo === receiver)
+                          ? contactsInfo.find((o) => o.mobNo === receiver).name
+                          : receiver}
+                      </h4>
                       <p>{OnlieStatus ? "online" : "offline"}</p>
                     </div>
                   </div>
                   <div className="options">
                     <BiSearchAlt2 className="icon" />
-                    <SlOptionsVertical className="icon" />
+                    <SlOptionsVertical
+                      className="icon"
+                      onClick={() => {
+                        setEditMobileNumber(true);
+                      }}
+                    />
                   </div>
                 </div>
                 <div className="mesBox" ref={uiMessagesRef}>
@@ -222,10 +283,46 @@ const UserList = () => {
                       const date = new Date(item.time);
                       const showDate =
                         receiverMessageArray[i + 1] || i === 0
-                          ? new Date(receiverMessageArray[i].time).getDay() !==
+                          ? // new Date(receiverMessageArray[i].time).getDate() +
+                            //     "/" +
+                            //     (new Date(
+                            //       receiverMessageArray[i].time
+                            //     ).getMonth() +
+                            //       1) +
+                            //     "/" +
+                            //     new Date(
+                            //       receiverMessageArray[i].time
+                            //     ).getFullYear() !==
+                            //     new Date(
+                            //       receiverMessageArray[i + 1].time
+                            //     ).getDate() +
+                            //       "/" +
+                            //       (new Date(
+                            //         receiverMessageArray[i + 1].time
+                            //       ).getMonth() +
+                            //         1) +
+                            //       "/" +
+                            //       new Date(
+                            //         receiverMessageArray[i + 1].time
+                            //       ).getFullYear() &&
+                            (new Date(
+                              receiverMessageArray[i].time
+                            ).getDate() !==
                               new Date(
                                 receiverMessageArray[i + 1].time
-                              ).getDay() &&
+                              ).getDate() ||
+                              new Date(
+                                receiverMessageArray[i].time
+                              ).getMonth() !==
+                                new Date(
+                                  receiverMessageArray[i + 1].time
+                                ).getMonth() ||
+                              new Date(
+                                receiverMessageArray[i + 1].time
+                              ).getFullYear() !==
+                                new Date(
+                                  receiverMessageArray[i].time
+                                ).getFullYear()) &&
                             new Date(
                               receiverMessageArray[i + 1].time
                             ).getDate() +
@@ -268,7 +365,9 @@ const UserList = () => {
                               <p className="time">
                                 {item.time &&
                                   (date.getHours() < 12
-                                    ? date.getHours()
+                                    ? date.getHours() === 0
+                                      ? 12
+                                      : date.getHours()
                                     : date.getHours() - 12) +
                                     ":" +
                                     date.getMinutes() +

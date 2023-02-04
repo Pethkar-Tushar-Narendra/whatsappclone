@@ -1,11 +1,11 @@
-import React, { useContext, useState } from "react";
-import "./NumberEdit.css";
-import { FaArrowLeft } from "react-icons/fa";
-import { Store } from "../../../../../Store";
+import React, { useContext, useState } from 'react';
+import './NumberEdit.css';
+import { FaArrowLeft } from 'react-icons/fa';
+import { Store } from '../../../../../Store';
 const NumberEdit = ({ editMobileNumber, setEditMobileNumber, receiver }) => {
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { contactsInfo } = state;
-  const [name, setName] = useState("");
+  const [name, setName] = useState('');
   const [nameError, setNameError] = useState(false);
   const submitHandler = (e) => {
     e.preventDefault();
@@ -23,33 +23,33 @@ const NumberEdit = ({ editMobileNumber, setEditMobileNumber, receiver }) => {
         } else {
           contactsInfo.push(objArray);
         }
-        ctxDispatch({ type: "SET_CONTACTS", payload: contactsInfo });
+        ctxDispatch({ type: 'SET_CONTACTS', payload: contactsInfo });
         localStorage.setItem(
-          "whatsAppUserContactsInfo",
+          'whatsAppUserContactsInfo',
           JSON.stringify(contactsInfo)
         );
         setEditMobileNumber(false);
         setNameError(false);
-        setName("");
+        setName('');
       }
     }
   };
   const deleteHandler = () => {
     const nameObj = contactsInfo.find((item, i) => item.mobNo === receiver);
     contactsInfo.splice(contactsInfo.indexOf(nameObj), 1);
-    ctxDispatch({ type: "SET_CONTACTS", payload: contactsInfo });
+    ctxDispatch({ type: 'SET_CONTACTS', payload: contactsInfo });
     localStorage.setItem(
-      "whatsAppUserContactsInfo",
+      'whatsAppUserContactsInfo',
       JSON.stringify(contactsInfo)
     );
     setEditMobileNumber(false);
     setNameError(false);
-    setName("");
+    setName('');
   };
   return (
     <div
       className={
-        editMobileNumber ? "numberEditContainer" : "numberEditContainer close"
+        editMobileNumber ? 'numberEditContainer' : 'numberEditContainer close'
       }
     >
       <div className="section1">
@@ -80,23 +80,23 @@ const NumberEdit = ({ editMobileNumber, setEditMobileNumber, receiver }) => {
           />
           <p
             style={{
-              color: "red",
-              display: name.length > 15 ? "flex" : "none",
+              color: 'red',
+              display: name.length > 15 ? 'flex' : 'none',
             }}
           >
             Name should be less than 15 character
           </p>
           <p
             style={{
-              color: "red",
-              display: nameError ? "flex" : "none",
+              color: 'red',
+              display: nameError ? 'flex' : 'none',
             }}
           >
             Same name is saved for other user
           </p>
           <div className="btnClass">
             <button type="submit">Save</button>
-            <button style={{ backgroundColor: "red" }} onClick={deleteHandler}>
+            <button style={{ backgroundColor: 'red' }} onClick={deleteHandler}>
               Delete
             </button>
           </div>

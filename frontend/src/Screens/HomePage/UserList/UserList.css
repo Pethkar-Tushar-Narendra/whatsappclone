@@ -294,6 +294,7 @@
     align-items: baseline; */
   gap: 1rem;
   overflow-y: scroll;
+  overflow-x: hidden;
 }
 .userlist-container .messageBox .mesBox .dateShower {
   display: flex;
@@ -360,7 +361,6 @@
   cursor: pointer;
 }
 .userlist-container .messageBox .mesBox .msg .emojiPicker .iconBox {
-  /* border: 1px solid red; */
   padding: 0.5rem;
   display: flex;
   align-items: center;
@@ -373,11 +373,8 @@
 .userlist-container .messageBox .mesBox .msg .emojiPicker.close {
   opacity: 0;
   visibility: hidden;
-  /* animation-delay: 1s; */
   transform: translateY(-50%);
   top: 50%;
-  /* width: 0; */
-  /* left: 100%; */
 }
 .userlist-container .messageBox .mesBox .messsageBox:hover .reactionBox {
   display: flex;
@@ -410,6 +407,7 @@
   width: 100%;
   display: flex;
   justify-content: end;
+  padding-right: 1rem;
 }
 
 .userlist-container .messageBox .mesBox .msgBox2 .msg2 {
@@ -423,7 +421,6 @@
   position: relative;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.068),
     0 6px 20px 0 rgba(0, 0, 0, 0.082);
-  margin-right: 1rem;
 }
 .userlist-container .messageBox .mesBox .msgBox2 .msg2 p {
   color: #333;

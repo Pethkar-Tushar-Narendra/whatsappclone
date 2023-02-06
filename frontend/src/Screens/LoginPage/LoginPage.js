@@ -12,6 +12,7 @@ const LoginPage = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loginMobNo, setLoginMobNo] = useState("");
   const [loginPass, setLoginPass] = useState("");
+  console.log(window.innerWidth);
   const loginSubmit = async (e) => {
     e.preventDefault();
     try {

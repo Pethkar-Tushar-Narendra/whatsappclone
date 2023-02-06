@@ -1,21 +1,22 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
-import './UserList.css';
-import { BiSearchAlt2 } from 'react-icons/bi';
-import { MdGroups } from 'react-icons/md';
-import { SlOptionsVertical } from 'react-icons/sl';
-import { BsChatLeftTextFill } from 'react-icons/bs';
-import { BiLoaderCircle } from 'react-icons/bi';
-import { FiMenu } from 'react-icons/fi';
-import socketIOClient from 'socket.io-client';
-import { VscSmiley } from 'react-icons/vsc';
-import { RiAttachment2 } from 'react-icons/ri';
-import { BsMic } from 'react-icons/bs';
-import { MdDoubleArrow } from 'react-icons/md';
-import { HiOutlineEmojiHappy } from 'react-icons/hi';
-import { BsPlusLg } from 'react-icons/bs';
-import { Store } from '../../../Store';
-import NumberEdit from './EditScreens/NumberEditScreen/NumberEdit';
-import Picker from 'emoji-picker-react';
+import React, { useContext, useEffect, useRef, useState } from "react";
+import "./UserList.css";
+import { BiSearchAlt2 } from "react-icons/bi";
+import { MdGroups } from "react-icons/md";
+import { SlOptionsVertical } from "react-icons/sl";
+import { BsChatLeftTextFill } from "react-icons/bs";
+import { BiLoaderCircle } from "react-icons/bi";
+import { FiMenu } from "react-icons/fi";
+import socketIOClient from "socket.io-client";
+import { VscSmiley } from "react-icons/vsc";
+import { RiAttachment2 } from "react-icons/ri";
+import { BsMic } from "react-icons/bs";
+import { MdDoubleArrow } from "react-icons/md";
+import { HiOutlineEmojiHappy } from "react-icons/hi";
+import { BsPlusLg } from "react-icons/bs";
+import { Store } from "../../../Store";
+import NumberEdit from "./EditScreens/NumberEditScreen/NumberEdit";
+import Picker from "emoji-picker-react";
+import ProfileEdit from "./EditScreens/ProfileEditScreen/ProfileEdit";
 const UserList = () => {
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { userInfo } = state;
@@ -25,13 +26,13 @@ const UserList = () => {
   const user = mobNo;
   const uiMessagesRef = useRef(null);
   const ENDPOINT =
-    window.location.host.indexOf('localhost') >= 0
-      ? 'http://127.0.0.1:4000'
+    window.location.host.indexOf("localhost") >= 0
+      ? "http://127.0.0.1:4000"
       : window.location.host;
   const [messages, setMessages] = useState([]);
-  const [message, setMessage] = useState('');
-  const [query, setQuery] = useState('');
-  const [receiver, setReceiver] = useState('');
+  const [message, setMessage] = useState("");
+  const [query, setQuery] = useState("");
+  const [receiver, setReceiver] = useState("");
   const [socket, setSocket] = useState(null);
   const [doublelogin, setDoublelogin] = useState(true);
   const [OnlieStatus, setOnlineStatus] = useState(false);
@@ -40,30 +41,32 @@ const UserList = () => {
   const [reactionToggle, setReactionToggle] = useState(false);
   const [index, setIndex] = useState(null);
   const [editMobileNumber, setEditMobileNumber] = useState(false);
+  const [profileToggle, setProfileToggle] = useState(false);
+  console.log(window.screen);
   useEffect(() => {
     if (!socket) {
       const sk = socketIOClient(ENDPOINT);
       setSocket(sk);
     } else {
-      socket.emit('onLogin', {
+      socket.emit("onLogin", {
         mobNo: user,
-        token: 'something' + userInfo.token,
+        token: "something" + userInfo.token,
       });
-      socket.on('error', (err) => {
+      socket.on("error", (err) => {
         console.log(err);
       });
-      socket.on('users', (data) => {
+      socket.on("users", (data) => {
         setMessages(data.users);
-        ctxDispatch({ type: 'SET_MESSAGES', payload: data.messages });
-        localStorage.setItem('whatsAppMessages', JSON.stringify(data.messages));
+        ctxDispatch({ type: "SET_MESSAGES", payload: data.messages });
+        localStorage.setItem("whatsAppMessages", JSON.stringify(data.messages));
       });
-      socket.on('doublelogin', () => {
+      socket.on("doublelogin", () => {
         // setDoublelogin(false);
       });
-      socket.on('receiveMsg', (data) => {
-        ctxDispatch({ type: 'SET_MESSAGES', payload: data });
+      socket.on("receiveMsg", (data) => {
+        ctxDispatch({ type: "SET_MESSAGES", payload: data });
       });
-      socket.on('checkOnlineRes', (data) => {
+      socket.on("checkOnlineRes", (data) => {
         setOnlineStatus(data);
       });
     }
@@ -73,27 +76,27 @@ const UserList = () => {
       uiMessagesRef.current.scrollBy({
         top: uiMessagesRef.current.scrollHeight,
         left: 0,
-        behavior: 'smooth',
+        behavior: "smooth",
       });
     }
   }, [messageArray, receiver]);
   const msgHandler = (e) => {
     e.preventDefault();
     try {
-      socket.emit('onlinestatusReq', receiver);
-      socket.emit('sendMessage', {
+      socket.emit("onlinestatusReq", receiver);
+      socket.emit("sendMessage", {
         from: user,
         to: receiver,
         message,
       });
-      setMessage('');
+      setMessage("");
     } catch (error) {
       alert(error.message);
     }
   };
   const signoutHandler = () => {
-    ctxDispatch({ type: 'USER_SIGNOUT' });
-    localStorage.removeItem('whatsAppUserInfo');
+    ctxDispatch({ type: "USER_SIGNOUT" });
+    localStorage.removeItem("whatsAppUserInfo");
   };
   const receiverMessageArray = [];
   // const contactsInfo = [
@@ -105,18 +108,26 @@ const UserList = () => {
     <div className="userlist-container">
       {doublelogin && (
         <>
-          {' '}
+          {" "}
           <div className="infoBox">
             <NumberEdit
               editMobileNumber={editMobileNumber}
               setEditMobileNumber={setEditMobileNumber}
               receiver={receiver}
             />
+            <ProfileEdit
+              profileToggle={profileToggle}
+              setProfileToggle={setProfileToggle}
+              user={user}
+            />
             <div className="credentials">
               <div
                 className="prof-pic"
                 style={{
                   backgroundImage: `url("https://res.cloudinary.com/dyrkmzn7t/image/upload/v1674060633/default_profile_pic_w4yn7a.png")`,
+                }}
+                onClick={() => {
+                  setProfileToggle(true);
                 }}
               ></div>
               <div className="icon-container">
@@ -132,7 +143,7 @@ const UserList = () => {
                 <button
                   className="btn signout-btn"
                   onClick={signoutHandler}
-                  style={{ display: signoutToggle ? 'flex' : 'none' }}
+                  style={{ display: signoutToggle ? "flex" : "none" }}
                 >
                   Signout
                 </button>
@@ -169,7 +180,7 @@ const UserList = () => {
                   );
                 })
                 .map((item, i) => {
-                  var lastMessageArray = '';
+                  var lastMessageArray = "";
                   for (
                     let index = messageArray.length - 1;
                     index >= 0;
@@ -193,10 +204,10 @@ const UserList = () => {
                       key={i}
                       onClick={() => {
                         setReceiver(item.mobNo);
-                        socket.emit('onlinestatusReq', item.mobNo);
+                        socket.emit("onlinestatusReq", item.mobNo);
                       }}
                       style={{
-                        backgroundColor: receiver === item.mobNo && '#eaeee6',
+                        backgroundColor: receiver === item.mobNo && "#eaeee6",
                       }}
                     >
                       <div
@@ -213,20 +224,20 @@ const UserList = () => {
                           <p>
                             {lastMessageArray
                               ? lastMessageArray.message
-                              : '♦ Waiting for message'}
+                              : "♦ Waiting for message"}
                           </p>
                         </div>
                         <p className="timeShow">
                           {lastMessageArray.time &&
                             (new Date().getDate() +
-                              '/' +
+                              "/" +
                               (new Date().getMonth() + 1) +
-                              '/' +
+                              "/" +
                               new Date().getFullYear() ===
                             new Date(lastMessageArray.time).getDate() +
-                              '/' +
+                              "/" +
                               (new Date(lastMessageArray.time).getMonth() + 1) +
-                              '/' +
+                              "/" +
                               new Date(lastMessageArray.time).getFullYear()
                               ? ((timeShow.getHours() < 12
                                   ? timeShow.getHours()
@@ -235,14 +246,14 @@ const UserList = () => {
                                   : timeShow.getHours() < 12
                                   ? timeShow.getHours()
                                   : timeShow.getHours() - 12) +
-                                ':' +
+                                ":" +
                                 timeShow.getMinutes() +
-                                ' ' +
-                                (timeShow.getHours() < 12 ? 'am' : 'pm')
+                                " " +
+                                (timeShow.getHours() < 12 ? "am" : "pm")
                               : timeShow.getDate() +
-                                '/' +
+                                "/" +
                                 (timeShow.getMonth() + 1) +
-                                '/' +
+                                "/" +
                                 timeShow.getFullYear())}
                         </p>
                       </div>
@@ -273,7 +284,7 @@ const UserList = () => {
                           ? contactsInfo.find((o) => o.mobNo === receiver).name
                           : receiver}
                       </h4>
-                      <p>{OnlieStatus ? 'online' : 'offline'}</p>
+                      <p>{OnlieStatus ? "online" : "offline"}</p>
                     </div>
                   </div>
                   <div className="options">
@@ -320,12 +331,12 @@ const UserList = () => {
                             new Date(
                               receiverMessageArray[i + 1].time
                             ).getDate() +
-                              '/' +
+                              "/" +
                               (new Date(
                                 receiverMessageArray[i + 1].time
                               ).getMonth() +
                                 1) +
-                              '/' +
+                              "/" +
                               new Date(
                                 receiverMessageArray[i + 1].time
                               ).getFullYear()
@@ -339,16 +350,16 @@ const UserList = () => {
                                   ? new Date(
                                       receiverMessageArray[i].time
                                     ).getDate() +
-                                    '/' +
+                                    "/" +
                                     (new Date(
                                       receiverMessageArray[i].time
                                     ).getMonth() +
                                       1) +
-                                    '/' +
+                                    "/" +
                                     new Date(
                                       receiverMessageArray[i].time
                                     ).getFullYear()
-                                  : ''}
+                                  : ""}
                               </p>
                             </div>
                           )}
@@ -357,8 +368,8 @@ const UserList = () => {
                               <div
                                 className={
                                   reactionToggle && index === i
-                                    ? 'emojiPicker'
-                                    : 'emojiPicker close'
+                                    ? "emojiPicker"
+                                    : "emojiPicker close"
                                 }
                               >
                                 <span>👍</span>
@@ -395,10 +406,10 @@ const UserList = () => {
                                     : date.getHours() - 12 === 0
                                     ? 12
                                     : date.getHours() - 12) +
-                                    ':' +
+                                    ":" +
                                     date.getMinutes() +
-                                    ' ' +
-                                    (date.getHours() < 12 ? 'am' : 'pm')}
+                                    " " +
+                                    (date.getHours() < 12 ? "am" : "pm")}
                               </p>
                             </div>
                           </div>
@@ -412,23 +423,23 @@ const UserList = () => {
                         <div key={i}>
                           <div
                             className="dateShower"
-                            style={{ display: i === 0 ? 'flex' : 'none' }}
+                            style={{ display: i === 0 ? "flex" : "none" }}
                           >
                             <p className="dateBox">
                               {receiverMessageArray[i + 1]
                                 ? new Date(
                                     receiverMessageArray[i + 1].time
                                   ).getDate() +
-                                  '/' +
+                                  "/" +
                                   (new Date(
                                     receiverMessageArray[i + 1].time
                                   ).getMonth() +
                                     1) +
-                                  '/' +
+                                  "/" +
                                   new Date(
                                     receiverMessageArray[i + 1].time
                                   ).getFullYear()
-                                : ''}
+                                : ""}
                             </p>
                           </div>
                           <div className="messsageBox">
@@ -436,8 +447,8 @@ const UserList = () => {
                               <div
                                 className={
                                   reactionToggle && index === i
-                                    ? 'emojiPicker'
-                                    : 'emojiPicker close'
+                                    ? "emojiPicker"
+                                    : "emojiPicker close"
                                 }
                               >
                                 <span>👍</span>
@@ -470,16 +481,16 @@ const UserList = () => {
                                   (date.getHours() < 12
                                     ? date.getHours()
                                     : date.getHours() - 12) +
-                                    ':' +
+                                    ":" +
                                     date.getMinutes() +
-                                    ' ' +
-                                    (date.getHours() < 12 ? 'am' : 'pm')}
+                                    " " +
+                                    (date.getHours() < 12 ? "am" : "pm")}
                               </p>
                             </div>
                           </div>
                           <div
                             className="dateShower"
-                            style={{ display: showDate ? 'flex' : 'none' }}
+                            style={{ display: showDate ? "flex" : "none" }}
                           >
                             <p className="dateBox">{showDate}</p>
                           </div>
@@ -489,7 +500,7 @@ const UserList = () => {
                 </div>
                 {emojiToggle && (
                   <div className="picker">
-                    <Picker pickerStyle={{ width: '100%' }} />
+                    <Picker pickerStyle={{ width: "100%" }} />
                   </div>
                 )}
                 <div className="user-input">

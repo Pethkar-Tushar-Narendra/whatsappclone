@@ -19,6 +19,7 @@ import Picker from "emoji-picker-react";
 import ProfileEdit from "./EditScreens/ProfileEditScreen/ProfileEdit";
 import LoadingScreen from "./LoadingScreen/LoadingScreen";
 import StartScreen from "./StartScreen/StartScreen";
+import DoubleWindowScreen from "../DoubleWindowScreen/DoubleWindowScreen";
 const UserList = () => {
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { userInfo } = state;
@@ -36,7 +37,7 @@ const UserList = () => {
   const [query, setQuery] = useState("");
   const [receiver, setReceiver] = useState("");
   const [socket, setSocket] = useState(null);
-  const [doublelogin, setDoublelogin] = useState(true);
+  const [doublelogin, setDoublelogin] = useState(false);
   const [OnlieStatus, setOnlineStatus] = useState(false);
   const [signoutToggle, setSignoutToggle] = useState(false);
   const [emojiToggle, setEmojiToggle] = useState(false);
@@ -63,7 +64,7 @@ const UserList = () => {
         localStorage.setItem("whatsAppMessages", JSON.stringify(data.messages));
       });
       socket.on("doublelogin", () => {
-        // setDoublelogin(false);
+        setDoublelogin(true);
       });
       socket.on("receiveMsg", (data) => {
         ctxDispatch({ type: "SET_MESSAGES", payload: data });
@@ -105,7 +106,9 @@ const UserList = () => {
     <div className="userlist-container">
       {/* <LoadingScreen /> */}
 
-      {doublelogin && (
+      {doublelogin ? (
+        <DoubleWindowScreen />
+      ) : (
         <>
           {" "}
           <div className="infoBox">

@@ -2,19 +2,21 @@
   width: 100%;
   height: 100%;
   display: flex;
+  overflow: hidden;
 }
 .userlist-container .infoBox {
   width: 30%;
   height: 100%;
   background-color: #fff;
   position: relative;
+  overflow: hidden;
 }
 .userlist-container .messageBox .credentials,
 .userlist-container .infoBox .credentials {
   background-color: var(--bg-quaternary);
   width: 100%;
   height: 3.7rem;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 0.7rem;
   position: relative;
   z-index: 10;
   display: flex;
@@ -32,15 +34,15 @@
   cursor: pointer;
 }
 .userlist-container .infoBox .credentials .icon-container {
-  position: absolute;
+  /* position: absolute;
   top: 0;
-  left: 50%;
-  width: 50%;
+  left: 50%; */
+  /* min-width: 50%; */
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 1.9rem;
+  gap: 1.8rem;
   padding-right: 1.5rem;
 }
 .userlist-container .infoBox .credentials .icon-container .signout-btn {
@@ -259,6 +261,7 @@
   background-image: url('../../../../public/images/background.jpg');
   background-size: 300px;
   position: relative;
+  overflow: hidden;
 }
 .userlist-container .messageBox .shade{
   width: 100%;
@@ -484,6 +487,7 @@
   border-radius: 50%;
   transform: translateY(-50%);
   cursor: pointer;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 .userlist-container .messageBox .mesBox .msgBox2:hover .msg2 .reactionBox {
   display: flex;

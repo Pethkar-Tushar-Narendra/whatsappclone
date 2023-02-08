@@ -8,6 +8,7 @@
     justify-content: center;
     user-select: none;
     text-align: center;
+    overflow: hidden;
 }
 .startScreenContainer .line{
     height: 0.4rem;
@@ -25,7 +26,7 @@
 }
 .startScreenContainer .smallContainer .image{
     height: 15rem;
-    width: 50%;
+    width: 30rem;
     background-image: url('../../../../../public/images/whatsAppLoading.png');
     background-position: center;
     background-size: cover;
@@ -55,3 +56,10 @@
     gap: 0.5rem;
     font-size: 0.8rem;
 }
+
+
+/* @media (max-width: 1300px) {
+
+    .startScreenContainer .smallContainer .image{
+        min-width: 80%;}
+  } */

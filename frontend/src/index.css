@@ -14,7 +14,7 @@ body {
   position: relative;
 }
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 0.4rem;
   height: 100%;
 }
 ::-webkit-scrollbar-thumb {
@@ -26,12 +26,22 @@ code {
 }
 :root {
   --clr-bold: #8a54f0;
-  --bg-primary: #50a26e;
+  --bg-primary: #008069;
   --bg-secondary: #c7cec1;
   --bg-tertiary: #eee2d5;
-  --bg-quaternary: #eaeee6;
+  --bg-quaternary: #f0f2f5;
+  --bg-loading:#f0f2f5;
+  --clr-border: #ebeff0;
   --clr-para: #a5a2ab;
   --clr-primary: rgb(121, 115, 115);
+  --clr-iconColor: #54656f;
+  --clr-inputColor:#f0f2f5;
+  --clr-datebgColor:#fefefe;
+  --clr-datetextColor:#a0aaaf;
+  --clr-overviewtextColor:#a0aaaf;
+  --clr-scrollbarColor:#c3c2bd;
+  --clr-profileTextColor:#27947f;
+  --clr-startScreenLogo:#b5d0e7;
 }
 *,
 *::before,

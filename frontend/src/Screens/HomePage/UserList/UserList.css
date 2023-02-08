@@ -4,26 +4,26 @@
   display: flex;
 }
 .userlist-container .infoBox {
-  width: 35%;
+  width: 30%;
   height: 100%;
   background-color: #fff;
-  border-right: 0.08rem solid var(--clr-para);
   position: relative;
 }
 .userlist-container .messageBox .credentials,
 .userlist-container .infoBox .credentials {
   background-color: var(--bg-quaternary);
   width: 100%;
-  height: 10%;
-  padding: 0.5rem;
+  height: 3.7rem;
+  padding: 0.5rem 1rem;
   position: relative;
   z-index: 10;
-}
-.userlist-container .messageBox .credentials {
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-right: 0.1rem solid var(--clr-border);
 }
 .userlist-container .infoBox .credentials .prof-pic {
-  height: 100%;
+  height: 90%;
   aspect-ratio: 1;
   border-radius: 50%;
   background-position: center;
@@ -39,7 +39,8 @@
   height: 100%;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
+  gap: 1.9rem;
   padding-right: 1.5rem;
 }
 .userlist-container .infoBox .credentials .icon-container .signout-btn {
@@ -49,24 +50,24 @@
   z-index: 20;
 }
 .userlist-container .infoBox .credentials .icon-container .icon {
-  font-size: 2rem;
-  color: #48474b;
+  font-size: 1.6rem;
+  color: var(--clr-iconColor);
   cursor: pointer;
 }
 .userlist-container .infoBox .credentials .icon-container .icon:nth-child(2) {
-  font-size: 1.8rem;
+  font-size: 1.7rem;
 }
 .userlist-container .infoBox .credentials .icon-container .icon:nth-child(3) {
-  font-size: 1.3rem;
+  font-size: 1.2rem;
 }
 .userlist-container .infoBox .credentials .icon-container .icon:nth-child(4) {
-  font-size: 1.2rem;
+  font-size: 1rem;
 }
 .userlist-container .messageBox .credentials {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 1rem;
+  padding: 0 0.3rem;
 }
 .userlist-container .messageBox .credentials .name {
   height: 100%;
@@ -83,6 +84,9 @@
   flex-direction: column;
   position: relative;
   cursor: pointer;
+  width: fit-content;
+  max-width: 100%;
+  overflow: hidden;
 }
 .userlist-container .messageBox .credentials .name .cred-box h4 {
   height: 60%;
@@ -92,7 +96,8 @@
   height: 40%;
   width: 100%;
   font-size: 0.8rem;
-  color: var(--clr-primary);
+  font-weight: 400;
+  color: var(--clr-para);
 }
 .userlist-container .messageBox .credentials .name .img {
   height: 100%;
@@ -105,23 +110,23 @@
 }
 .userlist-container .messageBox .credentials .options {
   height: 100%;
-  width: 11%;
+  width: 9%;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding-right: 1rem;
 }
 .userlist-container .messageBox .credentials .options .icon {
-  font-size: 1.5rem;
-  color: #48474b;
+  font-size: 1.4rem;
+  color: var(--clr-iconColor);
   cursor: pointer;
 }
 .userlist-container .messageBox .credentials .options .icon:nth-child(2) {
-  font-size: 1.2rem;
+  font-size: 1rem;
 }
 .userlist-container .infoBox .searchbar {
   width: 100%;
-  height: 8%;
+  height: 3.1rem;
   background-color: #fff;
   position: relative;
   padding: 0.4rem 0.7rem;
@@ -129,7 +134,7 @@
   align-items: center;
   justify-content: center;
   background-color: #fff;
-  border-bottom: 0.08rem solid var(--clr-para);
+  border-bottom: 0.01px solid var(--bg-quaternary);
 }
 .userlist-container .infoBox .searchbar .search {
   width: 100%;
@@ -141,30 +146,32 @@
 .userlist-container .infoBox .searchbar .search input {
   width: 100%;
   height: 100%;
-  border: 0.08rem solid var(--clr-para);
+  border:none;
   background-color: var(--bg-quaternary);
   padding: 0 1rem;
   padding-left: 3.5rem;
-  border-radius: 5px;
+  border-radius: 0.6rem;
   font-weight: 500;
   font-size: 1rem;
 }
 .userlist-container .infoBox .searchbar .search input::placeholder {
   font-weight: 500;
-  font-size: 1rem;
+  font-size: 0.85rem;
 }
 .userlist-container .infoBox .searchbar .search .icon1 {
-  margin-left: 1rem;
+  margin-left: 0.7rem;
   cursor: pointer;
+  color: var(--clr-iconColor);
 }
 .userlist-container .infoBox .searchbar .icon {
   position: absolute;
   top: 50%;
   transform: translate(100%, -50%);
   left: 0;
+  color: var(--clr-iconColor);
 }
 .userlist-container .infoBox .userlist {
-  height: 82.3%;
+  height: calc(100% - 6.8rem);
   width: 100%;
   overflow-y: scroll;
 }
@@ -175,33 +182,33 @@
   border: none;
 }
 .userlist-container .infoBox .userlist .userBox {
-  height: 4.5rem;
+  height: 4.2rem;
   width: 100%;
   position: relative;
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .userlist-container .infoBox .userlist .userBox:hover {
   cursor: pointer;
   background-color: var(--bg-quaternary);
 }
 .userlist-container .infoBox .userlist .userBox .img {
-  position: absolute;
-  height: 75%;
-  top: 50%;
+  width: 13%;
   aspect-ratio: 1;
+  margin:0 1rem;
   border-radius: 50%;
-  transform: translate(15%, -50%);
-  border: 0.05rem solid var(--clr-para);
+  border: 0.05rem solid var(--clr-border);
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
 }
 .userlist-container .infoBox .userlist .userBox .box {
-  margin-left: 18%;
-  width: 82%;
+  width: 84%;
   height: 100%;
   padding: 0 1rem;
-  border-bottom: 0.01rem solid var(--clr-para);
+  border-bottom: 0.01rem solid var(--clr-border);
   position: relative;
 }
 .userlist-container .infoBox .userlist .userBox .box .name,
@@ -213,11 +220,22 @@
   justify-content: start;
   overflow: hidden;
 }
+.userlist-container .infoBox .userlist .userBox .box .msg-overview p{
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: var(--clr-para);
+  height: 1.5rem;
+  overflow: hidden;
+}
+.userlist-container .infoBox .userlist .userBox .box .name{
+  width: 77%;
+}
 .userlist-container .infoBox .userlist .userBox .box .timeShow {
   position: absolute;
-  top: 10%;
+  top: 15%;
   right: 5%;
-  font-size: 0.8rem;
+  font-size: 0.7rem;
+  font-weight: 400;
 }
 .userlist-container .infoBox .userlist .userBox .box .icon {
   padding: 0.2rem;
@@ -228,7 +246,7 @@
   border-radius: 50%;
 }
 .userlist-container .infoBox .userlist .userBox .box .icon:hover {
-  background-color: var(--clr-para);
+  background-color: #f0f2f5;
 }
 .userlist-container .infoBox .userlist .userBox .box .msg-overview {
   height: 40%;
@@ -236,17 +254,23 @@
   overflow: hidden;
 }
 .userlist-container .messageBox {
-  width: 65%;
+  width: 70%;
   height: 100%;
   background-image: url('../../../../public/images/background.jpg');
   background-size: 300px;
   position: relative;
 }
+.userlist-container .messageBox .shade{
+  width: 100%;
+  height: 100%;
+  background-color: #dbd1c25b;
+
+}
 .userlist-container .messageBox .user-input {
   position: absolute;
   bottom: 0;
   width: 100%;
-  height: 11%;
+  height: 3.8rem;
   background-color: var(--bg-quaternary);
   display: flex;
   align-items: center;
@@ -259,16 +283,20 @@
   left: 0;
 }
 .userlist-container .messageBox .user-input input {
-  width: 81%;
+  width: 83%;
   height: 100%;
-  border: 0.1rem solid var(--clr-para);
+  border: none;
   border-radius: 5px;
   padding: 0 1rem;
   font-weight: 500;
   font-size: 1rem;
 }
+.userlist-container .messageBox .user-input input::placeholder {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
 .userlist-container .messageBox .user-input .icon {
-  color: #48474b;
+  color: var(--clr-iconColor);
   cursor: pointer;
   font-size: 1.5rem;
 }
@@ -284,14 +312,11 @@
   position: absolute;
   width: 100%;
   height: fit-content;
-  max-height: 79%;
-  padding: 1rem 1.5rem;
-  padding-left: 2rem;
+  max-height: calc(100% - 7.6rem);
+  padding: 1rem 3.5rem;
   display: flex;
   flex-direction: column;
-  bottom: 11%;
-  /* justify-content: flex-end;
-    align-items: baseline; */
+  bottom: 3.8rem;
   gap: 1rem;
   overflow-y: scroll;
   overflow-x: hidden;
@@ -300,17 +325,17 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0.8rem 0;
+  padding: 0.5rem 0;
 }
 .userlist-container .messageBox .mesBox .dateShower .dateBox {
-  background-color: rgb(231, 230, 230);
+  background-color: var(--clr-datebgColor);
   padding: 0.3rem 0.8rem;
   border-radius: 0.5rem;
   font-weight: 400;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  font-size: 0.9rem;
 }
 .userlist-container .messageBox .mesBox .messsageBox {
-  width: 100%;
+  width: 99%;
 }
 .userlist-container .messageBox .mesBox .msg {
   /* height: 2rem; */
@@ -381,16 +406,17 @@
 }
 .userlist-container .messageBox .mesBox .msg p {
   color: #333;
-  font-weight: 600;
+  font-weight: 500;
   overflow: hidden;
+  font-size: 0.8rem;
 }
 .userlist-container .messageBox .mesBox .msg .time {
   width: 100%;
   display: flex;
   justify-content: end;
   align-items: center;
-  font-size: 0.7rem;
-  color: var(--clr-primary);
+  font-size: 0.6rem;
+  color: #848f98;
 }
 .userlist-container .messageBox .mesBox .msg::before {
   content: '';
@@ -417,14 +443,15 @@
   border-bottom-left-radius: 7px;
   border-bottom-right-radius: 7px;
   border-top-left-radius: 7px;
-  background-color: #89d49c;
+  background-color: #d9fdd3;
   position: relative;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.068),
     0 6px 20px 0 rgba(0, 0, 0, 0.082);
 }
 .userlist-container .messageBox .mesBox .msgBox2 .msg2 p {
   color: #333;
-  font-weight: 600;
+  font-weight: 500;
+  font-size: 0.8rem;
   overflow: hidden;
 }
 .userlist-container .messageBox .mesBox .msgBox2 .msg2 .time {
@@ -432,17 +459,17 @@
   display: flex;
   justify-content: end;
   align-items: center;
-  font-size: 0.7rem;
+  font-size: 0.6rem;
   color: var(--clr-primary);
 }
 .userlist-container .messageBox .mesBox .msgBox2 .msg2::before {
   content: '';
-  width: 0;
+  width: 1rem;
   aspect-ratio: 1;
   position: absolute;
   top: 0;
   right: -1rem;
-  border-left: 1rem solid #89d49c;
+  border-left: 1rem solid #d9fdd3;
   border-bottom: 1rem solid transparent;
 }
 .userlist-container .messageBox .mesBox .msgBox2 .msg2 .reactionBox {
@@ -463,7 +490,6 @@
 }
 
 .userlist-container .messageBox .mesBox .msgBox2 .emojiPicker {
-  /* border: 1px solid red; */
   position: absolute;
   right: calc(100% - 6rem);
   top: -4rem;
@@ -485,7 +511,6 @@
   cursor: pointer;
 }
 .userlist-container .messageBox .mesBox .msgBox2 .emojiPicker .iconBox {
-  /* border: 1px solid red; */
   padding: 0.5rem;
   display: flex;
   align-items: center;
@@ -498,9 +523,21 @@
 .userlist-container .messageBox .mesBox .msgBox2 .emojiPicker.close {
   opacity: 0;
   visibility: hidden;
-  /* animation-delay: 1s; */
   transform: translateY(-50%);
   top: 50%;
-  /* width: 0; */
-  /* left: 100%; */
+}
+
+
+@media (max-width: 1300px) {
+
+  .userlist-container .messageBox {width: 60%;}
+  .userlist-container .infoBox {
+    width: 40%;
+  }
+}
+@media (max-width: 750px) {
+  .userlist-container .messageBox {width: 60%;}
+  .userlist-container .infoBox {
+    width: 40%;
+  }
 }

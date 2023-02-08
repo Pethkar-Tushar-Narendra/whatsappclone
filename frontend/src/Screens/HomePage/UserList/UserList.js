@@ -17,6 +17,8 @@ import { Store } from "../../../Store";
 import NumberEdit from "./EditScreens/NumberEditScreen/NumberEdit";
 import Picker from "emoji-picker-react";
 import ProfileEdit from "./EditScreens/ProfileEditScreen/ProfileEdit";
+import LoadingScreen from "./LoadingScreen/LoadingScreen";
+import StartScreen from "./StartScreen/StartScreen";
 const UserList = () => {
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { userInfo } = state;
@@ -42,7 +44,7 @@ const UserList = () => {
   const [index, setIndex] = useState(null);
   const [editMobileNumber, setEditMobileNumber] = useState(false);
   const [profileToggle, setProfileToggle] = useState(false);
-  console.log(window.screen);
+  // console.log(window.screen.width);
   useEffect(() => {
     if (!socket) {
       const sk = socketIOClient(ENDPOINT);
@@ -99,13 +101,10 @@ const UserList = () => {
     localStorage.removeItem("whatsAppUserInfo");
   };
   const receiverMessageArray = [];
-  // const contactsInfo = [
-  //   { mobNo: "8446520712", name: "Tushar" },
-  //   { mobNo: "9960439764", name: "Raj" },
-  //   { mobNo: "8221324353", name: "Parth Paliwal" },
-  // ];
   return (
     <div className="userlist-container">
+      {/* <LoadingScreen /> */}
+
       {doublelogin && (
         <>
           {" "}
@@ -124,7 +123,7 @@ const UserList = () => {
               <div
                 className="prof-pic"
                 style={{
-                  backgroundImage: `url("https://res.cloudinary.com/dyrkmzn7t/image/upload/v1674060633/default_profile_pic_w4yn7a.png")`,
+                  backgroundImage: `url("https://res.cloudinary.com/dyrkmzn7t/image/upload/v1663743090/cld-sample-2.jpg")`,
                 }}
                 onClick={() => {
                   setProfileToggle(true);
@@ -213,7 +212,7 @@ const UserList = () => {
                       <div
                         className="img"
                         style={{
-                          backgroundImage: `url(https://res.cloudinary.com/dyrkmzn7t/image/upload/v1674060633/default_profile_pic_w4yn7a.png)`,
+                          backgroundImage: `url(https://res.cloudinary.com/dyrkmzn7t/image/upload/v1664615088/xqsbp7cvdhwjj5lhqpt7.jpg)`,
                         }}
                       ></div>
                       <div className="box">
@@ -263,270 +262,281 @@ const UserList = () => {
             </div>
           </div>
           <div className="messageBox">
-            {receiver && (
-              <>
-                <div className="credentials">
-                  <div
-                    className="name"
-                    onClick={() => {
-                      setEditMobileNumber(true);
-                    }}
-                  >
+            <div className="shade">
+              {receiver ? (
+                <>
+                  <div className="credentials">
                     <div
-                      className="img"
-                      style={{
-                        backgroundImage: `url("https://res.cloudinary.com/dyrkmzn7t/image/upload/v1674060633/default_profile_pic_w4yn7a.png")`,
-                      }}
-                    ></div>
-                    <div className="cred-box">
-                      <h4>
-                        {contactsInfo.find((o) => o.mobNo === receiver)
-                          ? contactsInfo.find((o) => o.mobNo === receiver).name
-                          : receiver}
-                      </h4>
-                      <p>{OnlieStatus ? "online" : "offline"}</p>
-                    </div>
-                  </div>
-                  <div className="options">
-                    <BiSearchAlt2 className="icon" />
-                    <SlOptionsVertical
-                      className="icon"
+                      className="name"
                       onClick={() => {
                         setEditMobileNumber(true);
                       }}
-                    />
+                    >
+                      <div
+                        className="img"
+                        style={{
+                          backgroundImage: `url("https://res.cloudinary.com/dyrkmzn7t/image/upload/v1664615088/xqsbp7cvdhwjj5lhqpt7.jpg")`,
+                        }}
+                      ></div>
+                      <div className="cred-box">
+                        <h4>
+                          {contactsInfo.find((o) => o.mobNo === receiver)
+                            ? contactsInfo.find((o) => o.mobNo === receiver)
+                                .name
+                            : receiver}
+                        </h4>
+                        <p>{OnlieStatus ? "online" : "offline"}</p>
+                      </div>
+                    </div>
+                    <div className="options">
+                      <BiSearchAlt2 className="icon" />
+                      <SlOptionsVertical
+                        className="icon"
+                        onClick={() => {
+                          setEditMobileNumber(true);
+                        }}
+                      />
+                    </div>
                   </div>
-                </div>
-                <div className="mesBox" ref={uiMessagesRef}>
-                  {messageArray
-                    .filter((item, i) => {
-                      if (item.to === receiver || item.from === receiver) {
-                        receiverMessageArray.push(item);
-                      }
-                      return item.to === receiver || item.from === receiver;
-                    })
-                    .map((item, i) => {
-                      const date = new Date(item.time);
-                      const showDate =
-                        receiverMessageArray[i + 1] &&
-                        (receiverMessageArray[i + 1] || i === 0)
-                          ? (new Date(
-                              receiverMessageArray[i].time
-                            ).getDate() !==
-                              new Date(
-                                receiverMessageArray[i + 1].time
-                              ).getDate() ||
-                              new Date(
+                  <div className="mesBox" ref={uiMessagesRef}>
+                    {messageArray
+                      .filter((item, i) => {
+                        if (item.to === receiver || item.from === receiver) {
+                          receiverMessageArray.push(item);
+                        }
+                        return item.to === receiver || item.from === receiver;
+                      })
+                      .map((item, i) => {
+                        const date = new Date(item.time);
+                        const showDate =
+                          receiverMessageArray[i + 1] &&
+                          (receiverMessageArray[i + 1] || i === 0)
+                            ? (new Date(
                                 receiverMessageArray[i].time
-                              ).getMonth() !==
+                              ).getDate() !==
                                 new Date(
                                   receiverMessageArray[i + 1].time
-                                ).getMonth() ||
-                              new Date(
-                                receiverMessageArray[i + 1].time
-                              ).getFullYear() !==
+                                ).getDate() ||
                                 new Date(
                                   receiverMessageArray[i].time
-                                ).getFullYear()) &&
-                            new Date(
-                              receiverMessageArray[i + 1].time
-                            ).getDate() +
-                              "/" +
-                              (new Date(
-                                receiverMessageArray[i + 1].time
-                              ).getMonth() +
-                                1) +
-                              "/" +
+                                ).getMonth() !==
+                                  new Date(
+                                    receiverMessageArray[i + 1].time
+                                  ).getMonth() ||
+                                new Date(
+                                  receiverMessageArray[i + 1].time
+                                ).getFullYear() !==
+                                  new Date(
+                                    receiverMessageArray[i].time
+                                  ).getFullYear()) &&
                               new Date(
                                 receiverMessageArray[i + 1].time
-                              ).getFullYear()
-                          : null;
-                      return item.from === user ? (
-                        <div key={i}>
-                          {i === 0 && (
-                            <div className="dateShower">
+                              ).getDate() +
+                                "/" +
+                                (new Date(
+                                  receiverMessageArray[i + 1].time
+                                ).getMonth() +
+                                  1) +
+                                "/" +
+                                new Date(
+                                  receiverMessageArray[i + 1].time
+                                ).getFullYear()
+                            : null;
+                        return item.from === user ? (
+                          <div key={i}>
+                            {i === 0 && (
+                              <div className="dateShower">
+                                <p className="dateBox">
+                                  {receiverMessageArray[i]
+                                    ? new Date(
+                                        receiverMessageArray[i].time
+                                      ).getDate() +
+                                      "/" +
+                                      (new Date(
+                                        receiverMessageArray[i].time
+                                      ).getMonth() +
+                                        1) +
+                                      "/" +
+                                      new Date(
+                                        receiverMessageArray[i].time
+                                      ).getFullYear()
+                                    : ""}
+                                </p>
+                              </div>
+                            )}
+                            <div className="msgBox2">
+                              <div className="msg2">
+                                <div
+                                  className={
+                                    reactionToggle && index === i
+                                      ? "emojiPicker"
+                                      : "emojiPicker close"
+                                  }
+                                >
+                                  <span>👍</span>
+                                  <span>❤️</span>
+                                  <span>🤣</span>
+                                  <span>😮</span>
+                                  <span>😢</span>
+                                  <span>🙏</span>
+                                  <i className="iconBox">
+                                    <BsPlusLg className="icon" />
+                                  </i>
+                                </div>
+                                <div
+                                  className="reactionBox"
+                                  onClick={() => {
+                                    if (i === index) {
+                                      setReactionToggle(!reactionToggle);
+                                      setIndex(i);
+                                    } else {
+                                      setReactionToggle(true);
+                                      setIndex(i);
+                                    }
+                                  }}
+                                >
+                                  <HiOutlineEmojiHappy className="icon" />
+                                </div>
+                                <p className="messageBox-chat">
+                                  {" "}
+                                  {item.message}
+                                </p>
+                                <p className="time">
+                                  {item.time &&
+                                    (date.getHours() < 12
+                                      ? date.getHours() === 0
+                                        ? 12
+                                        : date.getHours()
+                                      : date.getHours() - 12 === 0
+                                      ? 12
+                                      : date.getHours() - 12) +
+                                      ":" +
+                                      date.getMinutes() +
+                                      " " +
+                                      (date.getHours() < 12 ? "am" : "pm")}
+                                </p>
+                              </div>
+                            </div>
+                            {showDate && (
+                              <div className="dateShower">
+                                <p className="dateBox">{showDate}</p>
+                              </div>
+                            )}
+                          </div>
+                        ) : (
+                          <div key={i}>
+                            <div
+                              className="dateShower"
+                              style={{ display: i === 0 ? "flex" : "none" }}
+                            >
                               <p className="dateBox">
-                                {receiverMessageArray[i]
+                                {receiverMessageArray[i + 1]
                                   ? new Date(
-                                      receiverMessageArray[i].time
+                                      receiverMessageArray[i + 1].time
                                     ).getDate() +
                                     "/" +
                                     (new Date(
-                                      receiverMessageArray[i].time
+                                      receiverMessageArray[i + 1].time
                                     ).getMonth() +
                                       1) +
                                     "/" +
                                     new Date(
-                                      receiverMessageArray[i].time
+                                      receiverMessageArray[i + 1].time
                                     ).getFullYear()
                                   : ""}
                               </p>
                             </div>
-                          )}
-                          <div className="msgBox2">
-                            <div className="msg2">
-                              <div
-                                className={
-                                  reactionToggle && index === i
-                                    ? "emojiPicker"
-                                    : "emojiPicker close"
-                                }
-                              >
-                                <span>👍</span>
-                                <span>❤️</span>
-                                <span>🤣</span>
-                                <span>😮</span>
-                                <span>😢</span>
-                                <span>🙏</span>
-                                <i className="iconBox">
-                                  <BsPlusLg className="icon" />
-                                </i>
-                              </div>
-                              <div
-                                className="reactionBox"
-                                onClick={() => {
-                                  if (i === index) {
-                                    setReactionToggle(!reactionToggle);
-                                    setIndex(i);
-                                  } else {
-                                    setReactionToggle(true);
-                                    setIndex(i);
+                            <div className="messsageBox">
+                              <div className="msg">
+                                <div
+                                  className={
+                                    reactionToggle && index === i
+                                      ? "emojiPicker"
+                                      : "emojiPicker close"
                                   }
-                                }}
-                              >
-                                <HiOutlineEmojiHappy className="icon" />
+                                >
+                                  <span>👍</span>
+                                  <span>❤️</span>
+                                  <span>🤣</span>
+                                  <span>😮</span>
+                                  <span>😢</span>
+                                  <span>🙏</span>
+                                  <i className="iconBox">
+                                    <BsPlusLg className="icon" />
+                                  </i>
+                                </div>
+                                <div
+                                  className="reactionBox"
+                                  onClick={() => {
+                                    if (i === index) {
+                                      setReactionToggle(!reactionToggle);
+                                      setIndex(i);
+                                    } else {
+                                      setReactionToggle(true);
+                                      setIndex(i);
+                                    }
+                                  }}
+                                >
+                                  <HiOutlineEmojiHappy className="icon" />
+                                </div>
+                                <p className="messageBox-chat">
+                                  {" "}
+                                  {item.message}
+                                </p>
+                                <p className="time">
+                                  {item.time &&
+                                    (date.getHours() < 12
+                                      ? date.getHours()
+                                      : date.getHours() - 12) +
+                                      ":" +
+                                      date.getMinutes() +
+                                      " " +
+                                      (date.getHours() < 12 ? "am" : "pm")}
+                                </p>
                               </div>
-                              <p> {item.message}</p>
-                              <p className="time">
-                                {item.time &&
-                                  (date.getHours() < 12
-                                    ? date.getHours() === 0
-                                      ? 12
-                                      : date.getHours()
-                                    : date.getHours() - 12 === 0
-                                    ? 12
-                                    : date.getHours() - 12) +
-                                    ":" +
-                                    date.getMinutes() +
-                                    " " +
-                                    (date.getHours() < 12 ? "am" : "pm")}
-                              </p>
                             </div>
-                          </div>
-                          {showDate && (
-                            <div className="dateShower">
+                            <div
+                              className="dateShower"
+                              style={{ display: showDate ? "flex" : "none" }}
+                            >
                               <p className="dateBox">{showDate}</p>
                             </div>
-                          )}
-                        </div>
-                      ) : (
-                        <div key={i}>
-                          <div
-                            className="dateShower"
-                            style={{ display: i === 0 ? "flex" : "none" }}
-                          >
-                            <p className="dateBox">
-                              {receiverMessageArray[i + 1]
-                                ? new Date(
-                                    receiverMessageArray[i + 1].time
-                                  ).getDate() +
-                                  "/" +
-                                  (new Date(
-                                    receiverMessageArray[i + 1].time
-                                  ).getMonth() +
-                                    1) +
-                                  "/" +
-                                  new Date(
-                                    receiverMessageArray[i + 1].time
-                                  ).getFullYear()
-                                : ""}
-                            </p>
                           </div>
-                          <div className="messsageBox">
-                            <div className="msg">
-                              <div
-                                className={
-                                  reactionToggle && index === i
-                                    ? "emojiPicker"
-                                    : "emojiPicker close"
-                                }
-                              >
-                                <span>👍</span>
-                                <span>❤️</span>
-                                <span>🤣</span>
-                                <span>😮</span>
-                                <span>😢</span>
-                                <span>🙏</span>
-                                <i className="iconBox">
-                                  <BsPlusLg className="icon" />
-                                </i>
-                              </div>
-                              <div
-                                className="reactionBox"
-                                onClick={() => {
-                                  if (i === index) {
-                                    setReactionToggle(!reactionToggle);
-                                    setIndex(i);
-                                  } else {
-                                    setReactionToggle(true);
-                                    setIndex(i);
-                                  }
-                                }}
-                              >
-                                <HiOutlineEmojiHappy className="icon" />
-                              </div>
-                              <p> {item.message}</p>
-                              <p className="time">
-                                {item.time &&
-                                  (date.getHours() < 12
-                                    ? date.getHours()
-                                    : date.getHours() - 12) +
-                                    ":" +
-                                    date.getMinutes() +
-                                    " " +
-                                    (date.getHours() < 12 ? "am" : "pm")}
-                              </p>
-                            </div>
-                          </div>
-                          <div
-                            className="dateShower"
-                            style={{ display: showDate ? "flex" : "none" }}
-                          >
-                            <p className="dateBox">{showDate}</p>
-                          </div>
-                        </div>
-                      );
-                    })}
-                </div>
-                {emojiToggle && (
-                  <div className="picker">
-                    <Picker pickerStyle={{ width: "100%" }} />
+                        );
+                      })}
                   </div>
-                )}
-                <div className="user-input">
-                  <VscSmiley
-                    className="icon"
-                    onClick={() => {
-                      setEmojiToggle(!emojiToggle);
-                    }}
-                  />
-                  <RiAttachment2 className="icon" />
-                  <input
-                    type="text"
-                    placeholder="Type a message"
-                    value={message}
-                    onChange={(e) => {
-                      setMessage(e.target.value);
-                    }}
-                  />
-                  {message ? (
-                    <MdDoubleArrow className="icon1" onClick={msgHandler} />
-                  ) : (
-                    <BsMic className="icon" />
+                  {emojiToggle && (
+                    <div className="picker">
+                      <Picker pickerStyle={{ width: "100%" }} />
+                    </div>
                   )}
-                </div>
-              </>
-            )}
+                  <div className="user-input">
+                    <VscSmiley
+                      className="icon"
+                      onClick={() => {
+                        setEmojiToggle(!emojiToggle);
+                      }}
+                    />
+                    <RiAttachment2 className="icon" />
+                    <input
+                      type="text"
+                      placeholder="Type a message"
+                      value={message}
+                      onChange={(e) => {
+                        setMessage(e.target.value);
+                      }}
+                    />
+                    {message ? (
+                      <MdDoubleArrow className="icon1" onClick={msgHandler} />
+                    ) : (
+                      <BsMic className="icon" />
+                    )}
+                  </div>
+                </>
+              ) : (
+                <StartScreen />
+              )}
+            </div>
           </div>
         </>
       )}

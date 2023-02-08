@@ -5,6 +5,7 @@ const userSchema = new mongoose.Schema({
   password: { type: String, required: true },
   online: { type: Boolean, default: true },
   socketId: { type: String },
+  profilePic: { type: String },
   messages: [],
 });
 

@@ -11,7 +11,6 @@ const ChatScreen = () => {
     <div className="homepage-container">
       <div className="chatBox">
         <UserList />
-        {/* <MobileScreen /> */}
       </div>
     </div>
   );

@@ -1,10 +1,13 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./LoginPag.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Store } from "../../Store";
 const LoginPage = () => {
   const navigate = useNavigate();
+  useEffect(() => {
+    window.screen.width < 850 && navigate("/");
+  }, []);
   const { dispatch: ctxDispatch } = useContext(Store);
   const [loginToggle, setLoginToggle] = useState(true);
   const [password, setPassword] = useState("");

@@ -99,10 +99,21 @@ io.on("connection", async (socket) => {
     const user = await User.findOne({ mobNo: receiver }, { _id: 0, online: 1 });
     user && io.to(socket.id).emit("checkOnlineRes", user.online);
   });
+  socket.on("updateReadedMessage", async (data) => {
+    console.log(data);
+    io.to(socket.id).emit("updatedMessage", data);
+    const user = await User.findOne({ mobNo: updateData.from });
+    // if (sender && receiver) {
+    //   sender.messages.push(updateData);
+    //   receiver.messages.push(updateData);
+    //   const savedSender = await sender.save();
+    //   const savedReceiver = await receiver.save();}
+  });
   socket.on("sendMessage", async (data) => {
     const updateData = {
       ...data,
       time: new Date().getTime(),
+      read: false,
     };
     const sender = await User.findOne({ mobNo: updateData.from });
     const receiver = await User.findOne({ mobNo: updateData.to });

@@ -12,12 +12,13 @@ import { RiAttachment2 } from "react-icons/ri";
 import { BsMic } from "react-icons/bs";
 import { MdDoubleArrow } from "react-icons/md";
 import { HiOutlineEmojiHappy } from "react-icons/hi";
+import { IoIosArrowDown } from "react-icons/io";
 import { BsPlusLg } from "react-icons/bs";
 import { Store } from "../../../Store";
 import NumberEdit from "./EditScreens/NumberEditScreen/NumberEdit";
 import Picker from "emoji-picker-react";
 import ProfileEdit from "./EditScreens/ProfileEditScreen/ProfileEdit";
-import LoadingScreen from "./LoadingScreen/LoadingScreen";
+// import LoadingScreen from "./LoadingScreen/LoadingScreen";
 import StartScreen from "./StartScreen/StartScreen";
 import DoubleWindowScreen from "../DoubleWindowScreen/DoubleWindowScreen";
 const UserList = () => {
@@ -42,6 +43,7 @@ const UserList = () => {
   const [signoutToggle, setSignoutToggle] = useState(false);
   const [emojiToggle, setEmojiToggle] = useState(false);
   const [reactionToggle, setReactionToggle] = useState(false);
+  const [messageArrayUnread, setMessageArrayUnread] = useState([]);
   const [index, setIndex] = useState(null);
   const [editMobileNumber, setEditMobileNumber] = useState(false);
   const [profileToggle, setProfileToggle] = useState(false);
@@ -59,12 +61,13 @@ const UserList = () => {
         console.log(err);
       });
       socket.on("users", (data) => {
+        setMessageArrayUnread(data.messages);
         setMessages(data.users);
         ctxDispatch({ type: "SET_MESSAGES", payload: data.messages });
         localStorage.setItem("whatsAppMessages", JSON.stringify(data.messages));
       });
       socket.on("doublelogin", () => {
-        setDoublelogin(true);
+        // setDoublelogin(true);
       });
       socket.on("receiveMsg", (data) => {
         ctxDispatch({ type: "SET_MESSAGES", payload: data });
@@ -102,6 +105,7 @@ const UserList = () => {
     localStorage.removeItem("whatsAppUserInfo");
   };
   const receiverMessageArray = [];
+  // console.log(receiverMessageArray);
   return (
     <div className="userlist-container">
       {/* <LoadingScreen /> */}
@@ -110,7 +114,6 @@ const UserList = () => {
         <DoubleWindowScreen />
       ) : (
         <>
-          {" "}
           <div className="infoBox">
             <NumberEdit
               editMobileNumber={editMobileNumber}
@@ -200,6 +203,12 @@ const UserList = () => {
                   const contact = contactsInfo.find(
                     (o) => o.mobNo === item.mobNo
                   );
+                  const unreadMessages = messageArrayUnread.reduce((a, c) => {
+                    if (c.to === item.mobNo && c.read === false) {
+                      a = a + 1;
+                    }
+                    return a;
+                  }, 0);
                   return (
                     <div
                       className="userBox"
@@ -228,6 +237,19 @@ const UserList = () => {
                               ? lastMessageArray.message
                               : "♦ Waiting for message"}
                           </p>
+                          <div className="endBox">
+                            <div
+                              className="unreadBlock"
+                              style={{
+                                display: unreadMessages > 0 ? "flex" : "none",
+                              }}
+                            >
+                              {unreadMessages}
+                            </div>
+                            <div className="arrow">
+                              <IoIosArrowDown />
+                            </div>
+                          </div>
                         </div>
                         <p className="timeShow">
                           {lastMessageArray.time &&
@@ -305,6 +327,10 @@ const UserList = () => {
                     {messageArray
                       .filter((item, i) => {
                         if (item.to === receiver || item.from === receiver) {
+                          if (item.to === receiver) {
+                            messageArray[i].read = true;
+                            item.read = true;
+                          }
                           receiverMessageArray.push(item);
                         }
                         return item.to === receiver || item.from === receiver;
@@ -508,6 +534,7 @@ const UserList = () => {
                         );
                       })}
                   </div>
+                  {console.log(receiverMessageArray)}
                   {emojiToggle && (
                     <div className="picker">
                       <Picker pickerStyle={{ width: "100%" }} />

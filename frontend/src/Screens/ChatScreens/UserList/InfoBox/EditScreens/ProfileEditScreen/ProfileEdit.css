@@ -1,0 +1,110 @@
+.profileContainer{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: 10000;
+    background-color: var(--bg-quaternary);
+    top: 0;
+    left: 0;
+    transition: 0.5s;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    flex-direction: column;
+}
+.profileContainer.close{
+    left: -150%;
+}
+.profileContainer .section1{
+width: 100%;
+height: 20%;
+background-color: var(--bg-primary);
+display: flex;
+align-items: flex-end;
+justify-content: start;
+}
+.profileContainer .section1 i{
+    color: #fff;
+    font-size: 1.5rem;
+    padding: 0.5rem;
+    display: flex;
+    gap: 2rem;
+    width: 100%;
+    padding: 1rem;
+    align-items: center;
+    /* justify-content: center; */
+    /* justify-content: space-between; */
+}
+.profileContainer .section1 i .icon{
+    cursor: pointer;
+    width: 30%;
+}
+.profileContainer .section1 i p{
+    font-size: 1.3rem;
+    padding-left: 2rem;
+    color: #fff;
+    width:100%;
+}
+.profileContainer .section2{
+    width: 100%;
+    height: 80%;
+padding-top: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    flex-direction: column;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+.profileContainer .section2 .profilePic{
+    height: 13rem;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    border: 0.1rem solid var(--clr-para);
+    overflow: hidden;
+}
+.profileContainer .section2 .profilePic .changePic{
+    width: 100%;
+    height: 100%;
+    background-color: #33333359;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    cursor: pointer;
+    font-size: 2rem;
+}
+.profileContainer .section2 .profilePic .changePic p{
+    color: #333;
+    font-size: 0.9rem;
+}
+.profileContainer .section2 .profileInfo{
+    /* height: 50%; */
+    margin-top: 10%;
+    width: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+.profileContainer .section2 .profileInfo .title{
+    color: var(--clr-para);
+    font-weight: 600;
+    font-size: 1.5rem;
+}
+.profileContainer .section2 .profileInfo .mobNo{
+    color: #fff;
+    font-weight: 600;
+    font-size: 1.5rem;
+    padding: 0.7rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.5rem;
+    background-color: var(--bg-primary);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}

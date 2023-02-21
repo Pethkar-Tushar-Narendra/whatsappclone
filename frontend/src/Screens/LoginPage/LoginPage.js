@@ -1,8 +1,8 @@
 import React, { useContext, useState } from "react";
-import { Store } from "../../Store";
 import "./LoginPag.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { Store } from "../../Store";
 const LoginPage = () => {
   const navigate = useNavigate();
   const { dispatch: ctxDispatch } = useContext(Store);
@@ -12,25 +12,22 @@ const LoginPage = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loginMobNo, setLoginMobNo] = useState("");
   const [loginPass, setLoginPass] = useState("");
-  console.log(window.innerWidth);
   const loginSubmit = async (e) => {
     e.preventDefault();
     try {
-      // console.log(loginMobNo, loginPass);
       const { data } = await axios.post("/api/login", {
         mobNo: loginMobNo,
         password: loginPass,
       });
       ctxDispatch({ type: "USER_SIGNIN", payload: data });
       localStorage.setItem("whatsAppUserInfo", JSON.stringify(data));
-      navigate("/");
+      navigate("/web");
     } catch (err) {
       console.log(err.response.data.message);
     }
   };
   const signUpSubmit = async (e) => {
     e.preventDefault();
-    console.log("password", password, " ", "Cpassword", confirmPassword);
     if (password !== confirmPassword) {
       window.alert("Passwords do not match");
       return;
@@ -42,7 +39,7 @@ const LoginPage = () => {
       });
       ctxDispatch({ type: "USER_SIGNIN", payload: data });
       localStorage.setItem("whatsAppUserInfo", JSON.stringify(data));
-      navigate("/");
+      navigate("/web");
     } catch (err) {
       console.log(err.response.data.message);
     }

@@ -1,0 +1,99 @@
+.numberEditContainer{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: 10000;
+    background-color: var(--bg-quaternary);
+    top: 0;
+    left: 0;
+    transition: 0.5s;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    flex-direction: column;
+}
+.numberEditContainer.close{
+    left: -150%;
+}
+.numberEditContainer .section1{
+width: 100%;
+height: 20%;
+background-color: var(--bg-primary);
+display: flex;
+align-items: flex-end;
+justify-content: start;
+}
+.numberEditContainer .section1 i{
+    color: #fff;
+    font-size: 1.5rem;
+    padding: 0.5rem;
+    display: flex;
+    gap: 2rem;
+    width: 100%;
+    padding: 1rem;
+    align-items: center;
+    justify-content: center;
+}
+.numberEditContainer .section1 i .icon{
+    cursor: pointer;
+}
+.numberEditContainer .section1 i p{
+    font-size: 1.3rem;
+    padding-left: 2rem;
+    color: #fff;
+}
+.numberEditContainer .section2{
+    width: 100%;
+    height: 80%;
+padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+.numberEditContainer .section2 form{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    flex-direction: column;
+    gap: 1rem;
+    font-weight: 500;
+    padding: 1rem 0;
+}
+.numberEditContainer .section2 form .btnClass {
+    display: flex;
+    gap: 1rem;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+}
+.numberEditContainer .section2 form .btnClass button{
+    padding: 1rem 2rem;
+    background: var(--bg-primary);
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border: 0.1rem solid #fff;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 1rem;
+}
+.numberEditContainer .section2 form input{
+    width: 80%;
+    height: 3rem;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border: 0.1rem solid #333;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    padding: 0 1rem;
+    font-size: 1.2rem;
+}
+.numberEditContainer .section2 form input{
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+}

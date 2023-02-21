@@ -100,14 +100,16 @@ io.on("connection", async (socket) => {
     user && io.to(socket.id).emit("checkOnlineRes", user.online);
   });
   socket.on("updateReadedMessage", async (data) => {
-    console.log(data);
-    io.to(socket.id).emit("updatedMessage", data);
-    const user = await User.findOne({ mobNo: updateData.from });
-    // if (sender && receiver) {
-    //   sender.messages.push(updateData);
-    //   receiver.messages.push(updateData);
-    //   const savedSender = await sender.save();
-    //   const savedReceiver = await receiver.save();}
+    const user = await User.findOne({ mobNo: data.user });
+    if (user) {
+      user.messages = data.message;
+      const updatedUser = await user.save();
+      const users = await User.find({}, { _id: 0, mobNo: 1 });
+      io.to(socket.id).emit("users", {
+        users: users,
+        messages: updatedUser.messages,
+      });
+    }
   });
   socket.on("sendMessage", async (data) => {
     const updateData = {
